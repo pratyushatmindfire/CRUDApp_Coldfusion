@@ -88,7 +88,7 @@
 		<cfinclude template="#ARGUMENTS.TargetPage#" />
 
 		<cflog file="AppLog" text="OnRequest">
-		<p>OnRequest</p>
+		<!--- <p>OnRequest</p> --->
 		<!--- Return out. --->
 		<cfreturn />
 	</cffunction>
@@ -102,7 +102,7 @@
 		hint="Fires after the page processing is complete.">
 
 		<cflog file="AppLog" text="OnRequestEnd">
-		</p>OnRequestEnd</p>
+		<!--- </p>OnRequestEnd</p> --->
 		<!--- Return out. --->
 		<cfreturn />
 	</cffunction>

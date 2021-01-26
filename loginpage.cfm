@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <title>Sessions</title>
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="controller.js"></script>
+<script src="./js/controller.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="./css/appstyler.css">
 </head>
 
-<cfdump var="#Form#">
+<!--- <cfdump var="#Form#"> --->
 
 	<cfif structkeyexists(URL, 'logout')>
 		<cfinvoke component="MyServices.authentication" method="doLogout" returnvariable="isuserLoggedIn">
@@ -63,17 +63,23 @@
 	</cfif>
 
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton')>
-			<div class="container">
-		<h1>Login Page</h1>
+		<h1 class="heading">Login Page</h1>
+		<div class="formcontainer">
 
-		<form name="loginform" method="post" action="loginpage.cfm">
-			<h3>Username</h3>
-			<input type = "text" name="name" value="">
+		<form class="form-content" name="loginform" method="post" action="loginpage.cfm">
+			<div class="formfield username">
+				<h3>Username</h3>
+				<input type = "text" name="name" value="">
+			</div>
+			
+			<div class="formfield password">
+				<h3>Password</h3>
+				<input type="password" name="password" value="">
+			</div>
 
-			<h3>Password</h3>
-			<input type="password" name="password" value="">
-
-			<input type="submit" name="loginButton" value="Login">
+			<div class="formfield submitbutton">
+				<input type="submit" name="loginButton" value="Login">
+			</div>
 		</form>
 
 		<!-- Validation error -->
@@ -92,7 +98,7 @@
 	</div>
 	</cfif>
 
-	<cfdump var="#Session#">
+	<!--- <cfdump var="#Session#"> --->
 
 </body>
 </html>
