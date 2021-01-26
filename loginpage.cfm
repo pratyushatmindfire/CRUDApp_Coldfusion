@@ -6,7 +6,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="./js/controller.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
 <link rel="stylesheet" href="./css/appstyler.css">
+
 </head>
 
 <!--- <cfdump var="#Form#"> --->
@@ -35,72 +37,76 @@
 <body>
 	<!-- User has logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<p><cfoutput>Welcome #session.loggedInUser.userName#</cfoutput></p>
-		<p><a href="loginpage.cfm?logout">Logout</a></p>
+		<div class="welcomeheader"><cfoutput><p class="welcomemessage">Welcome #session.loggedInUser.userName#</p></cfoutput><a class="logoutbutton" href="loginpage.cfm?logout">Logout</a></div>
 
 		<!-- Query out list of products -->
 		<cfquery datasource="classicmodels" name="showProducts" result="allProducts">
 			SELECT productCode, productName FROM products;
 		</cfquery>
 
-		<h1>List of all products queried</h1>
-		<table>
-			<tr>
-				<td>Product Code</td>
-				<td>Product Name</td>
-			<tr>
+		<h1 id="actionheader">List of Products</h1>
 
-			<cfoutput query="showProducts">
-				<tr>
-					<td>#productCode#</td>
-					<td>#productName#</td>
-					<td><button value="View" id="#productCode#">View</td>
-					<td><button value="Edit" id="#productCode#">Edit</td>
-					<td><button value="Delete" id="#productCode#" onclick="deleteItem(this.id)">Delete</td>
-				</tr>
-			</cfoutput>
-		</table>
+		<div>
+  			<div class="row">
+  				<cfoutput query="showProducts">
+    			<div class="col-sm-12 col-md-6 col-lg-4">
+    				<div class="container eachItem">
+    					<div class="itemheader">
+    						<p>#productCode#</p>
+    					</div>
+    					<div class="itemname">
+    						<p>#productName#</p>
+    					</div>
+
+    					<div class="makechanges">
+    						<button value="View" id="#productCode#">View
+							<button value="Edit" id="#productCode#">Edit
+							<button value="Delete" id="#productCode#" onclick="deleteItem(this.id)">Delete
+    					</div>
+    				</div>					
+    			</div>
+    			</cfoutput>
+  			</div>
+		</div>
 	</cfif>
 
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton')>
-		<h1 class="heading">Login Page</h1>
 		<div class="formcontainer">
+
+		<h1 class="heading">Login Page</h1>
 
 		<form class="form-content" name="loginform" method="post" action="loginpage.cfm">
 			<div class="formfield username">
-				<h3>Username</h3>
-				<input type = "text" name="name" value="">
+				<h3 class="formfield-header">Username</h3>
+				<input spellcheck="false" autocomplete="off" class="form-input" type="text" name="name" value="">
 			</div>
 			
 			<div class="formfield password">
-				<h3>Password</h3>
-				<input type="password" name="password" value="">
+				<h3 class="formfield-header">Password</h3>
+				<input spellcheck="false" autocomplete="off" class="form-input" type="password" name="password" value="">
 			</div>
 
 			<div class="formfield submitbutton">
-				<input type="submit" name="loginButton" value="Login">
+				<input class="form-submit" type="submit" name="loginButton" value="Login">
 			</div>
 		</form>
+	</div>
 
-		<!-- Validation error -->
-		<cfif structKeyexists(variables, 'errorMessages') AND NOT ArrayIsEmpty(errorMessages)>
+	<!-- Validation error -->
+	<cfif structKeyexists(variables, 'errorMessages') AND NOT ArrayIsEmpty(errorMessages)>
 			<cfoutput>
 				<cfloop array="#errorMessages#" item="message">
 					<p class="validatormessage">#message#</p>
 				</cfloop>
 			</cfoutput>
-		</cfif>
-
-		<!-- Unable to log in user -->
-		<cfif structkeyexists(variables, 'isUserLoggedIn') AND isuserLoggedIn EQ false>
-			<p>User not found. Try again</p>
-		</cfif>
-	</div>
 	</cfif>
 
+	<!-- Unable to log in user -->
+	<cfif structkeyexists(variables, 'isUserLoggedIn') AND isuserLoggedIn EQ false>
+			<p class="validatormessage">User not found. Try again</p>
+		</cfif>
+	</cfif>
 	<!--- <cfdump var="#Session#"> --->
 
 </body>
 </html>
-
-
