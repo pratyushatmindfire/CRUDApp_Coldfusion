@@ -1,12 +1,15 @@
-var deleteItem = function(codetoDelete){
+function deleteItem(codetoDelete){
 	console.log(codetoDelete);
-   $.ajax({
-      type:"POST",
-      url:"./services/delete.cfc?method=deleteItem",
-      data: codetoDelete,
-      cache:false,
-      success: function(msg) {
-      console.log('Message');
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "deleteItembyCode", productCodetoDelete: (codetoDelete)},
+    success: function (data){
+      window.location.reload();
+      },
+    error: function (xhr, textStatus, errorThrown){
+      console.log(errorThrown); //This will alert you of any errors.
       }
-  });
+      });
 }

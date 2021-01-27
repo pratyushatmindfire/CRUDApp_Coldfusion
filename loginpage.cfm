@@ -41,15 +41,14 @@
 
 		<!-- Query out list of products -->
 		<cfquery datasource="classicmodels" name="showProducts" result="allProducts">
-			SELECT productCode, productName FROM products;
+			SELECT productCode, productName FROM myproducts;
 		</cfquery>
 
 		<h1 id="actionheader">List of Products</h1>
 
-		<div>
   			<div class="row">
   				<cfoutput query="showProducts">
-    			<div class="col-sm-12 col-md-6 col-lg-4">
+    			<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox">
     				<div class="container eachItem">
     					<div class="itemheader">
     						<p>#productCode#</p>
@@ -59,14 +58,13 @@
     					</div>
 
     					<div class="makechanges">
-    						<button value="View" id="#productCode#">View
-							<button value="Edit" id="#productCode#">Edit
-							<button value="Delete" id="#productCode#" onclick="deleteItem(this.id)">Delete
+    						<button class="button leftcurve" value="View" id="#productCode#">View
+							<button class="button" value="Edit" id="#productCode#">Edit
+							<button class="button rightcurve" value="Delete" id="#productCode#" onclick="deleteItem(this.id)">Delete
     					</div>
     				</div>					
     			</div>
     			</cfoutput>
-  			</div>
 		</div>
 	</cfif>
 
