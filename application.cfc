@@ -7,9 +7,9 @@
 	<!--- Set up the application. --->
 	<cfset THIS.Name = "AppCFC" />
 	<cfset THIS.ApplicationTimeout = CreateTimeSpan( 0, 0, 1, 0 ) />
-	<cfset This.SessionTimeout = createTimeSpan(0, 0, 1, 0) />
+	<cfset This.SessionTimeout = createTimeSpan(0, 0, 0, 15) />
 	<cfset THIS.SessionManagement = "Yes" />
-	<cfset THIS.SetClientCookies = false />
+	<cfset THIS.SetClientCookies = true />
 
 
 	<!--- Define the page request properties. --->
@@ -180,6 +180,7 @@
 
 		<p>Some unhandled exception happened</p>
 		<p>The exception message is <span style="color: red">#arguments.Exception.Cause.Message#</span></p>
+		<cfdump var="#arguments.Exception#">
 		<cfreturn />
 	</cffunction>
 

@@ -112,6 +112,7 @@ body
     padding-right: 2%;
 }
 
+
 .welcomemessage
 {
     margin-top: 0;
@@ -120,7 +121,7 @@ body
 
 }
 
-.logoutbutton
+.logoutbutton, .backbutton
 {
 	font-size: medium;
     padding: 0.2% 1% 0.5% 1%;
@@ -133,7 +134,7 @@ body
     margin-top: 0.3em;
 }
 
-.logoutbutton:hover
+.logoutbutton:hover, .backbutton:hover
 {
 	text-decoration: none;
 	background-color: #a1a6b6;

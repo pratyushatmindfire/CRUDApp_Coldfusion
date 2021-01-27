@@ -16,6 +16,7 @@
 	<cfif structkeyexists(URL, 'logout')>
 		<cfinvoke component="MyServices.authentication" method="doLogout" returnvariable="isuserLoggedIn">
 		</cfinvoke>
+		<cflocation url = "loginpage.cfm">
 	</cfif>
 
 
@@ -37,6 +38,7 @@
 <body>
 	<!-- User has logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
+		<!--- <cfdump var="#Session#"> --->
 		<div class="welcomeheader"><cfoutput><p class="welcomemessage">Welcome #session.loggedInUser.userName#</p></cfoutput><a class="logoutbutton" href="loginpage.cfm?logout">Logout</a></div>
 
 		<!-- Query out list of products -->
@@ -58,8 +60,8 @@
     					</div>
 
     					<div class="makechanges">
-    						<button class="button leftcurve" value="View" id="#productCode#">View
-							<button class="button" value="Edit" id="#productCode#">Edit
+    						<button class="button leftcurve" value="View" id="#productCode#" onclick="window.location = '/CRUDApp/view.cfm?codetoView=' + this.id;">View
+							<button class="button" value="Edit" id="#productCode#" onclick="window.location = '/CRUDApp/editpage.cfm?codetoEdit=' + this.id;">Edit
 							<button class="button rightcurve" value="Delete" id="#productCode#" onclick="deleteItem(this.id)">Delete
     					</div>
     				</div>					
@@ -76,12 +78,12 @@
 		<form class="form-content" name="loginform" method="post" action="loginpage.cfm">
 			<div class="formfield username">
 				<h3 class="formfield-header">Username</h3>
-				<input spellcheck="false" autocomplete="off" class="form-input" type="text" name="name" value="">
+				<input spellcheck="false" required autocomplete="off" class="form-input" type="text" name="name" value="">
 			</div>
 			
 			<div class="formfield password">
 				<h3 class="formfield-header">Password</h3>
-				<input spellcheck="false" autocomplete="off" class="form-input" type="password" name="password" value="">
+				<input spellcheck="false" required autocomplete="off" class="form-input" type="password" name="password" value="">
 			</div>
 
 			<div class="formfield submitbutton">
@@ -100,7 +102,7 @@
 	</cfif>
 
 	<!-- Unable to log in user -->
-	<cfif structkeyexists(variables, 'isUserLoggedIn') AND isuserLoggedIn EQ false>
+	<cfif structkeyexists(variables, 'isUserLoggedIn') AND isuserLoggedIn EQ false AND NOT structkeyexists(URL, 'logout')>
 			<p class="validatormessage">User not found. Try again</p>
 		</cfif>
 	</cfif>
