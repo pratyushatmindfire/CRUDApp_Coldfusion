@@ -1,5 +1,8 @@
 <cfcomponent output="false">
-	<!---validateUser() method--->
+	<!--- Validate the form field inputs --->
+	<!--- Input :
+	userName: A string type argument, which is the user's nameuser
+	userPassword: A string type argument, which is the user's password --->
 	<cffunction name="validateUser" access="public" output="false" returntype="array">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
@@ -30,7 +33,7 @@
 			SELECT username, password, employee_id FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
 			AND
-			password=<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />
+			BINARY password=<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />
 		</cfquery>
 
 		<cfif userDetected.recordCount EQ 1>
