@@ -27,7 +27,7 @@
 		<cfset var isUserLoggedIn = false />
 
 		<cfquery datasource="classicmodels" name="checkUser" result="userDetected">
-			SELECT * FROM user
+			SELECT username, password, employee_id FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
 			AND
 			password=<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />
@@ -37,7 +37,7 @@
 
 			<cfset session.loggedInUser = {'userID' = checkUser.employee_id, 'userName' = checkUser.username} />
 
-			<cfset var isUserLoggedIn = true />
+			<cfset isUserLoggedIn = true />
 		</cfif>
 
 		<cfreturn isUserLoggedIn />
@@ -47,8 +47,9 @@
 
 	<!---doLogout() method--->
 	<cffunction name="doLogout" access="public" output="false" returntype="boolean">
-
-		<cfset structdelete(session,'loggedInUser') />
+		<cfset StructDelete(session,'loggedInUser') />
+		<cfset StructDelete(Application, 'editMemory', true)/>
+		<cfset StructDelete(Application, 'deleteMemory', true)/>
 		<cfreturn false />
 	</cffunction>
 

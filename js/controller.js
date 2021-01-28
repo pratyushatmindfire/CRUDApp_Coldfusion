@@ -6,7 +6,7 @@ function deleteItem(codetoDelete){
     cache: false,
     data: {method: "deleteItembyCode", productCodetoDelete: (codetoDelete)},
     success: function (data){
-      window.location.reload();
+      window.location='/CRUDApp/dashboard.cfm';
       },
     error: function (xhr, textStatus, errorThrown){
       console.log(errorThrown); //This will alert you of any errors.
@@ -28,7 +28,32 @@ function editItem(codetoEdit)
     cache: false,
     data: {method: "editItembyCode", productCodetoEdit: (codetoEdit), newproductname: (new_productname), newproductdesc: (new_productdesc) },
     success: function (data){
-      window.location='/CRUDApp/loginpage.cfm';
+      window.location='/CRUDApp/dashboard.cfm';
+      },
+    error: function (xhr, textStatus, errorThrown){
+      console.log(errorThrown); //This will alert you of any errors.
+      }
+      });
+}
+
+function createItem()
+{
+    var new_productcode=document.getElementsByName("new_productcode")[0].value;
+    var new_productname=document.getElementsByName("new_productname")[0].value;
+    var new_productdesc=document.getElementsByName("new_productdesc")[0].value;
+
+    console.log(new_productcode);
+    console.log(new_productname);
+    console.log(new_productdesc);
+
+    $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "createNewItem", productCodetoCreate: (new_productcode), productNametoCreate: (new_productname), productDesctoCreate: (new_productdesc) },
+    success: function (data){
+      // window.location='/CRUDApp/dashboard.cfm';
+      window.location='/CRUDApp/dashboard.cfm';
       },
     error: function (xhr, textStatus, errorThrown){
       console.log(errorThrown); //This will alert you of any errors.

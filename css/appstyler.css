@@ -69,6 +69,11 @@ body
     color: #78718f;
 }
 
+.text-center
+{
+    text-align: center;
+}
+
 .form-submit
 {
     border-radius: 6px;
@@ -121,10 +126,10 @@ body
 
 }
 
-.logoutbutton, .backbutton
+.logoutbutton, .backbutton, .addbutton
 {
-	font-size: medium;
-    padding: 0.2% 1% 0.5% 1%;
+	font-size: 0.8em;
+    padding: 1.2% 3% 1.5% 3%;
     text-decoration: none;
     color: #78718f;
     background-color: #eaeaea;
@@ -134,7 +139,7 @@ body
     margin-top: 0.3em;
 }
 
-.logoutbutton:hover, .backbutton:hover
+.logoutbutton:hover, .backbutton:hover, .addbutton:hover
 {
 	text-decoration: none;
 	background-color: #a1a6b6;
@@ -149,6 +154,13 @@ body
     margin: 1%;
     text-align: center;
     color: #eaeaea;
+}
+
+.add-logout
+{
+    display: flex;
+    justify-content: space-between;
+    width: 12%;
 }
 
 .eachItem
