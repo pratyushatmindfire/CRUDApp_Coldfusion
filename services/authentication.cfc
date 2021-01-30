@@ -1,8 +1,14 @@
 <cfcomponent output="false">
-	<!--- Validate the form field inputs --->
-	<!--- Input :
+	<!--- 
+	Validate the form field inputs
+
+	Input :
 	userName: A string type argument, which is the user's nameuser
-	userPassword: A string type argument, which is the user's password --->
+	userPassword: A string type argument, which is the user's password 
+	
+	Output:
+	An array, which is the array of error messages, can be empty if no errors		
+	--->
 	<cffunction name="validateUser" access="public" output="false" returntype="array">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
@@ -21,7 +27,16 @@
 
 
 
-	<!---doLogin() method--->
+	<!--- 
+	Login the user if the formfields are valid
+
+	Input :
+	userName: A string type argument, which is the user's nameuser
+	userPassword: A string type argument, which is the user's password 
+	
+	Output:
+	An boolean, which is the status of login		
+	--->
 	<cffunction name="doLogin" access="public" output="false" returntype="boolean">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
@@ -29,7 +44,7 @@
 
 		<cfset var isUserLoggedIn = false />
 
-		<cfquery datasource="classicmodels" name="checkUser" result="userDetected">
+		<cfquery name="checkUser" result="userDetected">
 			SELECT username, password, employee_id FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
 			AND
@@ -48,11 +63,17 @@
 
 
 
-	<!---doLogout() method--->
+	<!--- 
+	Logout the user by clearning the session variable
+
+	Output:
+	An boolean, which is the status of login	
+	--->
 	<cffunction name="doLogout" access="public" output="false" returntype="boolean">
 		<cfset StructDelete(session,'loggedInUser') />
 		<cfset StructDelete(Application, 'editMemory', true)/>
 		<cfset StructDelete(Application, 'deleteMemory', true)/>
+		<cfset StructDelete(Application, 'viewMemory', true)/>
 		<cfreturn false />
 	</cffunction>
 

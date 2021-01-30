@@ -20,9 +20,22 @@
 
 		<cfset querySingleProduct=createObject("component","MyServices.crudservices").getProductbyId(url.codetoDelete)/>
 
-		<cfoutput query="querySingleProduct">
-			<cfmodule template="./customtags/deletecomponent.cfm" productCode_param=#productCode# >
-		</cfoutput>
+		<cfif variables.querySingleProduct.recordcount EQ 0>
+
+			<cfmodule template="./customtags/fallback.cfm" heading="OOPS" content="THIS PRODUCT DOESN'T EXIST">
+
+		<cfelse>
+			<cftry>
+				<cfoutput query="querySingleProduct">
+					<cfmodule template="./customtags/deletecomponent.cfm" productCode_param=#productCode# >
+				</cfoutput>
+
+				<cfcatch type="any">
+					<cflocation url="somethingwentwrong.cfm">
+				</cfcatch>
+			</cftry>
+
+		</cfif>
 	<!--- <cfdump var=#Form#> --->
 
 	</cfif>

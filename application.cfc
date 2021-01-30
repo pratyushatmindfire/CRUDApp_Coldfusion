@@ -157,6 +157,21 @@
 		<cfreturn />
 	</cffunction>
 
+	<cffunction 
+		name="onMissingTemplate" 
+		returntype="boolean" 
+		output="false" >
+
+    	<cfargument 
+    		name="template" 
+    		type="string" 
+    		required="true" 
+    		/>
+
+    	<cfinclude template="pagenotfound.cfm" />
+		<cfabort />
+	</cffunction>
+
 
 	<cffunction
 		name="OnError"
@@ -180,8 +195,7 @@
 			/>
 
 		<p>Some unhandled exception happened</p>
-		<p>The exception message is <span style="color: red">#arguments.Exception.Cause.Message#</span></p>
-		<cfdump var="#arguments.Exception#">
+		<cflog file="AppLog" text="The exception message is #arguments.Exception.Cause.Message#">
 		<cfreturn />
 	</cffunction>
 

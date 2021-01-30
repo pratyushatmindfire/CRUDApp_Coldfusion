@@ -43,6 +43,10 @@
 
 		<cfelseif structkeyexists(Application, 'deleteMemory')>
 			<cflocation url="confirmdelete.cfm?codetoDelete=#Application.deleteMemory.deleteId#">
+
+		<cfelseif structkeyexists(Application, 'viewMemory')>
+			<cflocation url="view.cfm?codetoView=#Application.viewMemory.viewId#">
+
 		<cfelse>
 			<cflocation url="dashboard.cfm">
 		</cfif>

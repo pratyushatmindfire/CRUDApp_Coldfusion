@@ -21,21 +21,22 @@
 		<!--- <cfdump var="#Session#"> --->
 		<cfmodule template="./customtags/header.cfm" userName=#session.loggedInUser.userName#>
 
-		<!-- Query out list of products -->
-<!--- 		<cfquery datasource="classicmodels" name="showProducts" result="allProducts">
-			SELECT productCode, productName FROM myproducts;
-		</cfquery>
- --->
 		<h1 id="actionheader">List of Products</h1>
 
 
 			<cfset queryProducts=createObject("component","MyServices.crudservices").getAllProducts()/>
   			<div class="row">
+  				<cftry>
   				<cfoutput query="queryProducts">
     			<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox">
-    				<cfmodule template="./customtags/eachItem.cfm" productCode_param=#productCode# productName_param=#productName#>					
+    				<cfmodule template="./customtags/eachItem.cfm" productCode_param=#productCode# productName_param=#queryProducts.productName#>					
     			</div>
     			</cfoutput>
+
+    			<cfcatch type="any">
+					<cflocation url="somethingwentwrong.cfm">
+				</cfcatch>
+				</cftry>
 		  </div>
 
 		<cfelse>

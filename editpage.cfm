@@ -22,9 +22,22 @@
 		<!-- Query out list of products -->
 		<cfset querySingleProduct=createObject("component","MyServices.crudservices").getProductbyId(url.codetoEdit)/>
 
+		<cfif variables.querySingleProduct.recordcount EQ 0>
+
+			<cfmodule template="./customtags/fallback.cfm" heading="OOPS" content="THIS PRODUCT DOESN'T EXIST">
+
+		<cfelse>
+		<cftry>
 		<cfoutput query="querySingleProduct">
-			<cfmodule template="./customtags/editcomponent.cfm" productCode_param=#querySingleProduct.productCode# productName_param=#productName# productDesc_param=#productDesc# >
+			<cfmodule template="./customtags/editcomponent.cfm" productCode_param=#querySingleProduct.productCode# productName_param=#querySingleProduct.productName# productDesc_param=#querySingleProduct.productDesc# >
 		</cfoutput>
+
+		<cfcatch type="any">
+			<cflocation url="somethingwentwrong.cfm">
+		</cfcatch>
+		</cftry>
+
+		</cfif>
 
 	<!--- <cfdump var=#Form#> --->
 
