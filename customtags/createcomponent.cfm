@@ -25,4 +25,14 @@
 			</div>
 		</form>
 	</div>
+
+	<!--- Loop over and display create error messages --->
+	<cfif structKeyexists(Application, 'createErrors') AND NOT ArrayIsEmpty(Application.createErrors)>
+			<cfoutput>
+				<cfloop array="#Application.createErrors#" item="message">
+					<p class="validatormessage">#message#</p>
+				</cfloop>
+			</cfoutput>
+			<cfset structDelete(Application, 'createErrors')/>
+	</cfif>
 </cfoutput>

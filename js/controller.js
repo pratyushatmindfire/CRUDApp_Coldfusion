@@ -47,9 +47,9 @@ function editItem(codetoEdit)
         window.location="/CRUDApp/somethingwentwrong.cfm";
       }
       },
-    // error: function (xhr, textStatus, errorThrown){
-    //   console.log(errorThrown); //This will alert you of any errors.
-    //   }
+    error: function (xhr, textStatus, errorThrown){
+      console.log(errorThrown); //This will alert you of any errors.
+      }
       });
 }
 
@@ -69,12 +69,89 @@ function createItem()
     cache: false,
     data: {method: "createNewItem", productCodetoCreate: (new_productcode), productNametoCreate: (new_productname), productDesctoCreate: (new_productdesc) },
     success: function (createStatus){
-      console.log(createStatus);
-      // window.location='/CRUDApp/dashboard.cfm';
-      window.location='/CRUDApp/dashboard.cfm';
+
+      if(createStatus.includes("<boolean value='true'/>"))
+      {
+        window.location='/CRUDApp/dashboard.cfm';
+      }
+
+      else
+      {
+        window.location="/CRUDApp/createpage.cfm";
+      }},
+    error: function (xhr, textStatus, errorThrown){
+      console.log(errorThrown); //This will alert you of any errors.
+      }
+      })
+};
+
+function seedDashboard()
+{
+  let dashboardReference = $('#dashboardcontent');
+
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getAllProducts"},
+    success: function (retrievedData){
+        let response=JSON.parse(retrievedData).DATA;
+        console.log(response);
+
+        for(let each of response)
+        {
+          dashboardcontent.innerHTML+= generateDashboardItem(each[0], each[1]);
+        }
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      });
+}
+
+function generateDashboardItem(code, name)
+{
+  return '<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox"><div class="container eachItem"><div class="itemheader"><p>'
+  +code+
+  '</p></div><div class="itemname"><p>'
+  +name+
+  '</p></div><div class="makechanges"><button class="button leftcurve" value="View" id="'
+  +code+
+  '" onclick="'+urlgen('view', code)+'">View</button><button class="button" value="Edit" id="'+code+'" onclick="'+urlgen('edit', code)+'">Edit</button><button class="button rightcurve" value="Delete" id="'+code+'" onclick="'+urlgen('delete', code)+'">Delete</button></div></div></div>';
+}
+
+function getAllItems()
+{
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getAllProducts"},
+    success: function (retrievedData){
+        let response=JSON.parse(retrievedData).DATA;
+        console.log(response);
+        return response;
       },
     error: function (xhr, textStatus, errorThrown){
       console.log(errorThrown); //This will alert you of any errors.
       }
       });
+}
+
+function urlgen(mode, code)
+{
+  if(mode==='view')
+  {
+    return "window.location='/CRUDApp/view.cfm?codetoView="+code+"'";
+  }
+
+  if(mode==='edit')
+  {
+    return "window.location='/CRUDApp/editpage.cfm?codetoEdit="+code+"'";
+  }
+
+  if(mode==='delete')
+  {
+    return "window.location='/CRUDApp/confirmdelete.cfm?codetoDelete="+code+"'";
+  }
 }

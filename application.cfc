@@ -6,8 +6,8 @@
 
 	<!--- Set up the application. --->
 	<cfset THIS.Name = "AppCFC" />
-	<cfset THIS.ApplicationTimeout = CreateTimeSpan( 0, 0, 1, 0 ) />
-	<cfset This.SessionTimeout = createTimeSpan(0, 0, 0, 40) />
+	<cfset THIS.ApplicationTimeout = CreateTimeSpan( 0, 0, 10, 0 ) />
+	<cfset This.SessionTimeout = createTimeSpan(0, 0, 2, 0) />
 	<cfset THIS.SessionManagement = "Yes" />
 	<cfset THIS.SetClientCookies = true />
 	<cfset THIS.datasource = "classicmodels" />
@@ -195,7 +195,7 @@
 			/>
 
 		<p>Some unhandled exception happened</p>
-		<cflog file="AppLog" text="The exception message is #arguments.Exception.Cause.Message#">
+		<cfdump var=#Exception#>
 		<cfreturn />
 	</cffunction>
 

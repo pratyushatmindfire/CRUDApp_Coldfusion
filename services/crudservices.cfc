@@ -85,7 +85,7 @@
 	</cffunction>
 
 
-	<cffunction name="getAllProducts" returntype="query">
+	<cffunction name="getAllProducts" access="remote" returntype="query" returnFormat="JSON">
 
 		<cfquery name="allProducts">
 			SELECT productCode, productName FROM myproducts;
@@ -96,15 +96,15 @@
 
 
 
-	<cffunction name="createNewItem" access="remote" returntype="array">
+	<cffunction name="createNewItem" access="remote" returntype="boolean">
 		<cfargument name="productCodetoCreate" required="true" type="string">
 		<cfargument name="productNametoCreate" required="true" type="string">
 		<cfargument name="productDesctoCreate" required="true" type="string">
 
-		<cfset var aErrorMessages = ArrayNew(1) />
+		<cfset Application.createErrors=ArrayNew(1)/>
 
 		<cfif arguments.productCodetoCreate.trim() EQ '' OR arguments.productNametoCreate.trim() EQ '' OR arguments.productDesctoCreate.trim() EQ ''>
-			<cfset arrayAppend(aErrorMessages,'Please fill up all the fields') />
+			<cfset arrayAppend(Application.createErrors,'Make sure to fill up all the fields') />
 		</cfif>
 
 		<!--- Check if product with that code already exists, return false if it does --->
@@ -113,10 +113,12 @@
 			WHERE productCode = <cfqueryparam value = #arguments.productCodetoCreate# cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 
-		
+		<cfif existence.recordcount NEQ 0 AND arguments.productCodetoCreate NEQ ''>
+			<cfset arrayAppend(Application.createErrors,'Product with this ID already exists') />
+		</cfif> 
 
 		
-		<cfif existence.recordcount EQ 0 AND arrayLen(aErrorMessages) EQ 0>
+		<cfif existence.recordcount EQ 0 AND arrayLen(Application.createErrors) EQ 0>
 			<cfquery name="insertNewProduct">
 				INSERT INTO myproducts (productCode, productName, productDesc)
 				VALUES 
@@ -126,16 +128,13 @@
 					<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">
 				);
 			</cfquery>
-				
-		<cfelse>
-			<cfset arrayAppend(aErrorMessages,'Product with this id already exists!') />
+		</cfif>
 
+		<cfif ArrayLen(Application.createErrors) EQ 0>
+			<cfreturn true/>
 		</cfif>
 		
-
-
-		<!--- Finally check for errors --->
-  		<cfreturn aErrorMessages />
+  		<cfreturn false />
 	</cffunction>
 
 </cfcomponent>
