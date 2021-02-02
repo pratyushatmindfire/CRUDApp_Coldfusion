@@ -3,7 +3,7 @@
 <body onload="loadEditComponentData(<cfoutput>'#url.codetoEdit#'</cfoutput>);">
 	<!--- Redirect to login if user has not logged in --->
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
-		<cfset Application.editMemory = {'editId'= url.codetoEdit}/>
+		<cfset session.editMemory = {'editId'= url.codetoEdit}/>
 		<cflocation url="loginpage.cfm">
 	</cfif>
 

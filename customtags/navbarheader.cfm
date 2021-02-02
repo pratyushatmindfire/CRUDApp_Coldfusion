@@ -3,7 +3,7 @@
 		<cfoutput><p class="welcomemessage">Welcome #attributes.userName#</p></cfoutput>
 		<div class="add-logout">
 		<a class="addbutton" href="createpage.cfm">Create</a>
-		<a class="logoutbutton" href="loginpage.cfm?logout">Logout</a>
+		<a class="logoutbutton" onclick="logoutUser();">Logout</a>
 		</div>
 	</div>
 </cfoutput>

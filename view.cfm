@@ -3,13 +3,13 @@
 <body onload="loadViewComponentData(<cfoutput>'#url.codetoView#'</cfoutput>);">
 	<!--- Show login form if user isnt logged in --->
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
-		<cfset Application.viewMemory = {'viewId'= url.codetoView}/>
+		<cfset session.viewMemory = {'viewId'= url.codetoView}/>
 		<cflocation url="loginpage.cfm">
 	</cfif>
 
 	<!-- Show view form is user is logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfset StructDelete(Application, 'viewMemory', true)/>
+		<cfset StructDelete(session, 'viewMemory', true)/>
 		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
 		<cfmodule template="./customtags/viewcomponent.cfm">
 	</cfif>

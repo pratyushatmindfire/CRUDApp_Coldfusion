@@ -87,14 +87,13 @@ function createItem()
 
 function seedDashboard()
 {
-  let dashboardReference = $('#dashboardcontent');
-
   $.ajax({
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
     data: {method: "getAllProducts"},
     success: function (retrievedData){
+      var dashboardReference = $('#dashboardcontent');
         let response=JSON.parse(retrievedData).DATA;
         console.log(response);
 
@@ -254,4 +253,73 @@ function loadDeleteComponentData(code)
       }
       }
     );
+}
+
+function loginUser()
+{
+  event.preventDefault();
+  console.log("Logging in");
+
+  $.ajax({
+    url: "./services/authentication.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "validateUser", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
+    success: function (validatorResponse){
+      if(validatorResponse.includes("<boolean value='true'/>"))
+      {
+        $.ajax({
+          url: "./services/authentication.cfc", 
+          type: "post",
+          cache: false,
+          data: {method: "doLogin", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
+          success: function (loginResponse){
+          if(loginResponse.includes("<boolean value='true'/>"))
+          {
+            window.location='/CRUDApp/loginpage.cfm';
+          }
+          },
+          error: function (xhr, textStatus, errorThrown){
+            window.location='/CRUDApp/somethingwentwrong.cfm'; //This will alert you of any errors.
+          }
+        });
+
+      }
+
+      else
+      {
+        window.location.reload();
+      }
+      },
+    error: function (xhr, textStatus, errorThrown){
+      console.log(errorThrown); 
+      }
+      });
+}
+
+function logoutUser()
+{
+  console.log("Logging out");
+
+  $.ajax({
+    url: "./services/authentication.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "doLogout"},
+    success: function (logoutResponse){
+      if(logoutResponse.includes("<boolean value='true'/>"))
+      {
+        window.location='/CRUDApp/loginpage.cfm';
+      }
+
+      else
+      {
+        window.location.reload();
+      }
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm'; 
+      }
+      });
+
 }

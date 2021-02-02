@@ -27,12 +27,12 @@
 	</div>
 
 	<!--- Loop over and display create error messages --->
-	<cfif structKeyexists(Application, 'createErrors') AND NOT ArrayIsEmpty(Application.createErrors)>
+	<cfif structKeyexists(session, 'createErrors') AND NOT ArrayIsEmpty(session.createErrors)>
 			<cfoutput>
-				<cfloop array="#Application.createErrors#" item="message">
+				<cfloop array="#session.createErrors#" item="message">
 					<p class="validatormessage">#message#</p>
 				</cfloop>
 			</cfoutput>
-			<cfset structDelete(Application, 'createErrors')/>
+			<cfset structDelete(session, 'createErrors')/>
 	</cfif>
 </cfoutput>

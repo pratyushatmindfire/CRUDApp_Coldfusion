@@ -129,10 +129,10 @@
 		<cfargument name="productNametoCreate" required="true" type="string">
 		<cfargument name="productDesctoCreate" required="true" type="string">
 
-		<cfset Application.createErrors=ArrayNew(1)/>
+		<cfset session.createErrors=ArrayNew(1)/>
 
 		<cfif arguments.productCodetoCreate.trim() EQ '' OR arguments.productNametoCreate.trim() EQ '' OR arguments.productDesctoCreate.trim() EQ ''>
-			<cfset arrayAppend(Application.createErrors,'Make sure to fill up all the fields') />
+			<cfset arrayAppend(session.createErrors,'Make sure to fill up all the fields') />
 		</cfif>
 
 		<!--- Check if product with that code already exists, return false if it does --->
@@ -142,11 +142,11 @@
 		</cfquery>
 
 		<cfif existence.recordcount NEQ 0 AND arguments.productCodetoCreate NEQ ''>
-			<cfset arrayAppend(Application.createErrors,'Product with this ID already exists') />
+			<cfset arrayAppend(session.createErrors,'Product with this ID already exists') />
 		</cfif> 
 
 		
-		<cfif existence.recordcount EQ 0 AND arrayLen(Application.createErrors) EQ 0>
+		<cfif existence.recordcount EQ 0 AND arrayLen(session.createErrors) EQ 0>
 			<cfquery name="insertNewProduct">
 				INSERT INTO myproducts (productCode, productName, productDesc)
 				VALUES 
@@ -158,7 +158,7 @@
 			</cfquery>
 		</cfif>
 
-		<cfif ArrayLen(Application.createErrors) EQ 0>
+		<cfif ArrayLen(session.createErrors) EQ 0>
 			<cfreturn true/>
 		</cfif>
 		

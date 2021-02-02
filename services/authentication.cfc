@@ -9,20 +9,26 @@
 	Output:
 	An array, which is the array of error messages, can be empty if no errors		
 	--->
-	<cffunction name="validateUser" access="public" output="true" returntype="array">
+	<cffunction name="validateUser" access="remote" output="true" returntype="boolean">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
 		<!--- <cfdump output = "D:/applog.html" format = "html" var="#arguments#"> --->
-		<cfset var aErrorMessages = ArrayNew(1) />
+		<cfset session.aErrorMessages = ArrayNew(1) />
 		<!---Validate the eMail---->
 		<cfif arguments.userName EQ ''>
-			<cfset arrayAppend(aErrorMessages,'Please, provide a valid userame') />
+			<cfset arrayAppend(session.aErrorMessages,'Please, provide a valid userame') />
 		</cfif>
 		<!---Validate the password---->
 		<cfif arguments.userPassword EQ ''>
-			<cfset arrayAppend(aErrorMessages,'Please, provide a password') />
+			<cfset arrayAppend(session.aErrorMessages,'Please, provide a password') />
 		</cfif>
-		<cfreturn aErrorMessages />
+
+
+		<cfif arrayLen(session.aErrorMessages) EQ 0>
+			<cfreturn true/>
+		<cfelse>
+			<cfreturn false/>
+		</cfif>
 	</cffunction>
 
 
@@ -37,13 +43,17 @@
 	Output:
 	An boolean, which is the status of login		
 	--->
-	<cffunction name="doLogin" access="public" output="false" returntype="boolean">
+	<cffunction name="doLogin" access="remote" output="false" returntype="boolean">
+		<cftry>
+
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
 
 
 		<cfset var isUserLoggedIn = false />
+		<cfset session.aErrorMessages = ArrayNew(1) />
 
+		
 		<cfquery name="checkUser" result="userDetected">
 			SELECT username, password, employee_id FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
@@ -51,12 +61,21 @@
 			BINARY password=<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />
 		</cfquery>
 
+
 		<cfif userDetected.recordCount EQ 1>
 
 			<cfset session.loggedInUser = {'userID' = checkUser.employee_id, 'userName' = checkUser.username} />
 
 			<cfset isUserLoggedIn = true />
+
+		<cfelse>
+			<cfset arrayAppend(session.aErrorMessages,'User not found') />
 		</cfif>
+
+		<cfcatch type="any">
+			<cflocation url="somethingwentwrong.cfm"/>
+		</cfcatch>
+		</cftry>
 
 		<cfreturn isUserLoggedIn />
 	</cffunction>
@@ -67,14 +86,20 @@
 	Logout the user by clearning the session variable
 
 	Output:
-	An boolean, which is the status of login	
+	An boolean, which is the status of logout	
 	--->
-	<cffunction name="doLogout" access="public" output="false" returntype="boolean">
+	<cffunction name="doLogout" access="remote" output="false" returntype="boolean">
+		<cftry>
 		<cfset StructDelete(session,'loggedInUser') />
-		<cfset StructDelete(Application, 'editMemory', true)/>
-		<cfset StructDelete(Application, 'deleteMemory', true)/>
-		<cfset StructDelete(Application, 'viewMemory', true)/>
-		<cfreturn false />
+		<cfset StructDelete(session, 'editMemory', true)/>
+		<cfset StructDelete(session, 'deleteMemory', true)/>
+		<cfset StructDelete(session, 'viewMemory', true)/>
+
+		<cfcatch type="any">
+			<cflocation url="somethingwentwrong.cfm"/>
+		</cfcatch>
+		</cftry>
+		<cfreturn true />
 	</cffunction>
 
 </cfcomponent>

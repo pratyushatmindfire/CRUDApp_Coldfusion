@@ -1,47 +1,62 @@
 <cfmodule template="./customtags/htmlheader.cfm" pagetitle="Login">
 
 	<cfoutput>
-		<cfset variables.errorsList=ArrayNew(1)/>
+		<cfif structKeyExists(session, 'aErrorMessages')>
+			<cfset variables.errorsList=session.aErrorMessages/>
+		<cfelse>
+			<cfset variables.errorsList=ArrayNew(1)/>
+		</cfif>
 		<cfset variables.isuserLoggedIn=true/>
 	</cfoutput>
+
+	<cfdump var=#session#>
 	
-	<cfif structkeyexists(URL, 'logout')>
+<!--- 	<cfif structkeyexists(URL, 'logout')>
+		<cfscript>
+		WriteOutput('
+		<script language="JavaScript">
+			
+		</script>');
+		</cfscript>
 		<cfinvoke component="MyServices.authentication" method="doLogout" returnvariable="isuserLoggedIn">
 		</cfinvoke>
-		<cflocation url = "loginpage.cfm">
-	</cfif>
+	</cfif> --->
 
 
-	<cfif structKeyExists(Form, 'loginButton')>
+	<!--- <cfif structKeyExists(Form, 'loginButton')>
 
 		<cfset authenticationService=createObject("component","MyServices.authentication")/>
-		<cfset variables.errorsList=authenticationService.validateUser(Form.name, Form.password) />
+		<cfscript>
+			authenticationService.validateUser(Form.name, Form.password);
+		</cfscript>
+		<cfset variables.errorsList=session.aErrorMessages />
 
 		<cfif ArrayisEmpty(errorsList)>
-		<!-- Proceed to login -->
+		
 			<cfset variables.isUserLoggedIn = authenticationService.doLogin(Form.name, Form.password)/>
 		</cfif>
-	</cfif>
+	</cfif> --->
 
 
 <body>
 	<!-- User has logged in -->
+	<cfdump var=#errorsList#/>
+	<cfdump var=#Form#/>
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfif structkeyexists(Application, 'editMemory')>
-			<cflocation url="editpage.cfm?codetoEdit=#Application.editMemory.editId#">
+		<cfif structkeyexists(session, 'editMemory')>
+			<cflocation url="editpage.cfm?codetoEdit=#session.editMemory.editId#">
 
-		<cfelseif structkeyexists(Application, 'deleteMemory')>
-			<cflocation url="confirmdelete.cfm?codetoDelete=#Application.deleteMemory.deleteId#">
+		<cfelseif structkeyexists(session, 'deleteMemory')>
+			<cflocation url="confirmdelete.cfm?codetoDelete=#session.deleteMemory.deleteId#">
 
-		<cfelseif structkeyexists(Application, 'viewMemory')>
-			<cflocation url="view.cfm?codetoView=#Application.viewMemory.viewId#">
+		<cfelseif structkeyexists(session, 'viewMemory')>
+			<cflocation url="view.cfm?codetoView=#session.viewMemory.viewId#">
 
 		<cfelse>
 			<cflocation url="dashboard.cfm">
 		</cfif>
 	</cfif>
 
-	<!--- <cfdump var="#Form#"> --->
 	<!--- Show login if user isnt logged in --->
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton') OR NOT ArrayIsEmpty(errorsList)>
 		<cfmodule template="./customtags/logincomponent.cfm" errorMessages=#variables.errorsList# userMissing="#NOT variables.isuserLoggedIn#" headingLine="Login">

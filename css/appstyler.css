@@ -146,6 +146,7 @@ body
     color: #f7f3ff;
     border: 2px solid #dfdfdf;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 #actionheader
