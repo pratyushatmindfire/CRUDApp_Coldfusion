@@ -266,7 +266,7 @@ function loginUser()
     cache: false,
     data: {method: "validateUser", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
     success: function (validatorResponse){
-      if(validatorResponse.includes("<boolean value='true'/>"))
+      if(validatorResponse==="true")
       {
         $.ajax({
           url: "./services/authentication.cfc", 
@@ -274,7 +274,7 @@ function loginUser()
           cache: false,
           data: {method: "doLogin", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
           success: function (loginResponse){
-          if(loginResponse.includes("<boolean value='true'/>"))
+          if(loginResponse==="true")
           {
             window.location='/CRUDApp/loginpage.cfm';
           }
@@ -307,7 +307,7 @@ function logoutUser()
     cache: false,
     data: {method: "doLogout"},
     success: function (logoutResponse){
-      if(logoutResponse.includes("<boolean value='true'/>"))
+      if(logoutResponse==="true")
       {
         window.location='/CRUDApp/loginpage.cfm';
       }

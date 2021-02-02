@@ -1,4 +1,4 @@
-<cfcomponent output="true">
+<cfcomponent output="false">
 	<!--- 
 	Validate the form field inputs
 
@@ -9,7 +9,7 @@
 	Output:
 	An array, which is the array of error messages, can be empty if no errors		
 	--->
-	<cffunction name="validateUser" access="remote" output="true" returntype="boolean">
+	<cffunction name="validateUser" access="remote" output="false" returntype="boolean" returnformat="JSON">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
 		<!--- <cfdump output = "D:/applog.html" format = "html" var="#arguments#"> --->
@@ -43,13 +43,12 @@
 	Output:
 	An boolean, which is the status of login		
 	--->
-	<cffunction name="doLogin" access="remote" output="false" returntype="boolean">
-		<cftry>
+	<cffunction name="doLogin" access="remote" output="false" returntype="boolean" returnformat="JSON">
 
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
 
-
+		<cftry>
 		<cfset var isUserLoggedIn = false />
 		<cfset session.aErrorMessages = ArrayNew(1) />
 
@@ -88,7 +87,7 @@
 	Output:
 	An boolean, which is the status of logout	
 	--->
-	<cffunction name="doLogout" access="remote" output="false" returntype="boolean">
+	<cffunction name="doLogout" access="remote" output="false" returntype="boolean" returnformat="JSON">
 		<cftry>
 		<cfset StructDelete(session,'loggedInUser') />
 		<cfset StructDelete(session, 'editMemory', true)/>
