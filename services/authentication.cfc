@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="true">
 	<!--- 
 	Validate the form field inputs
 
@@ -9,10 +9,10 @@
 	Output:
 	An array, which is the array of error messages, can be empty if no errors		
 	--->
-	<cffunction name="validateUser" access="public" output="false" returntype="array">
+	<cffunction name="validateUser" access="public" output="true" returntype="array">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
-
+		<!--- <cfdump output = "D:/applog.html" format = "html" var="#arguments#"> --->
 		<cfset var aErrorMessages = ArrayNew(1) />
 		<!---Validate the eMail---->
 		<cfif arguments.userName EQ ''>

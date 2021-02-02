@@ -168,7 +168,7 @@
     		required="true" 
     		/>
 
-    	<cfinclude template="pagenotfound.cfm" />
+    	<cflocation url="pagenotfound.cfm" />
 		<cfabort />
 	</cffunction>
 

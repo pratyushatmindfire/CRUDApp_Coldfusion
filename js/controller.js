@@ -17,7 +17,7 @@ function deleteItem(codetoDelete){
       }
       },
     error: function (xhr, textStatus, errorThrown){
-      console.log(errorThrown); //This will alert you of any errors.
+      window.location="/CRUDApp/somethingwentwrong.cfm"; //This will alert you of any errors.
       }
       });
 }
@@ -25,8 +25,8 @@ function deleteItem(codetoDelete){
 function editItem(codetoEdit)
 {
     console.log("Code to edit", codetoEdit);
-    var new_productname=document.getElementsByName("productname")[0].value;
-    var new_productdesc=document.getElementsByName("productdesc")[0].value;
+    var new_productname= $('input[name="edit_productname"]')[0].value;
+    var new_productdesc=$('input[name="edit_productdesc"]')[0].value;
 
     console.log(new_productname, new_productdesc);
 
@@ -48,16 +48,16 @@ function editItem(codetoEdit)
       }
       },
     error: function (xhr, textStatus, errorThrown){
-      console.log(errorThrown); //This will alert you of any errors.
+      window.location="/CRUDApp/somethingwentwrong.cfm"; //This will alert you of any errors.
       }
       });
 }
 
 function createItem()
 {
-    var new_productcode=document.getElementsByName("new_productcode")[0].value;
-    var new_productname=document.getElementsByName("new_productname")[0].value;
-    var new_productdesc=document.getElementsByName("new_productdesc")[0].value;
+    var new_productcode=$('input[name="new_productcode"]')[0].value;
+    var new_productname=$('input[name="new_productname"]')[0].value;
+    var new_productdesc=$('input[name="new_productdesc"]')[0].value;
 
     console.log(new_productcode);
     console.log(new_productname);
@@ -80,7 +80,7 @@ function createItem()
         window.location="/CRUDApp/createpage.cfm";
       }},
     error: function (xhr, textStatus, errorThrown){
-      console.log(errorThrown); //This will alert you of any errors.
+      window.location="/CRUDApp/somethingwentwrong.cfm"; //This will alert you of any errors.
       }
       })
 };
@@ -154,4 +154,104 @@ function urlgen(mode, code)
   {
     return "window.location='/CRUDApp/confirmdelete.cfm?codetoDelete="+code+"'";
   }
+}
+
+function loadViewComponentData(code)
+{
+  console.log(code);
+
+  $.ajax(
+  {
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    success: function (retrievedData){
+      console.log(JSON.parse(retrievedData).DATA);
+        if(JSON.parse(retrievedData).DATA.length==0)
+        {
+          window.location='/CRUDApp/productdoesntexist.cfm';
+        }
+
+        else
+        {
+          let response=JSON.parse(retrievedData).DATA[0];
+          console.log(response);
+
+          $('h1[name="view_productcode"]')[0].innerText="Viewing Product "+response[0];
+          $('h3[name="view_productname"]')[0].innerText=response[1];
+          $('h3[name="view_productdesc"]')[0].innerText=response[2];
+        } 
+      },
+    error: function (xhr, textStatus, errorThrown){
+       window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      }
+    );
+}
+
+function loadEditComponentData(code)
+{
+  console.log(code);
+
+  $.ajax(
+  {
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    success: function (retrievedData){
+      console.log(JSON.parse(retrievedData).DATA);
+        if(JSON.parse(retrievedData).DATA.length==0)
+        {
+          window.location='/CRUDApp/productdoesntexist.cfm';
+        }
+
+        else
+        {
+          let response=JSON.parse(retrievedData).DATA[0];
+          console.log(response);
+
+          $('h1[name="edit_productcode"]')[0].innerText="Editing Product "+response[0];
+          $('input[name="edit_productname"]')[0].value=response[1];
+          $('input[name="edit_productdesc"]')[0].value=response[2];
+        } 
+      },
+    error: function (xhr, textStatus, errorThrown){
+       window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      }
+    );
+}
+
+function loadDeleteComponentData(code)
+{
+  console.log(code);
+
+  $.ajax(
+  {
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    success: function (retrievedData){
+      console.log(JSON.parse(retrievedData).DATA);
+        if(JSON.parse(retrievedData).DATA.length==0)
+        {
+          window.location='/CRUDApp/productdoesntexist.cfm';
+        }
+
+        else
+        {
+          let response=JSON.parse(retrievedData).DATA[0];
+          console.log(response);
+
+          $('h2[name="delete_productcode"]')[0].innerText=response[0];
+        } 
+      },
+    error: function (xhr, textStatus, errorThrown){
+       window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      }
+    );
 }

@@ -1,6 +1,6 @@
-<cfmodule template="./customtags/htmlheader.cfm" pagetitle="View Page">
+<cfmodule template="./customtags/htmlheader.cfm" pagetitle="Product doesnt exist">
 
-<body onload="loadViewComponentData(<cfoutput>'#url.codetoView#'</cfoutput>);">
+<body>
 	<!--- Show login form if user isnt logged in --->
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
 		<cfset Application.viewMemory = {'viewId'= url.codetoView}/>
@@ -9,9 +9,8 @@
 
 	<!-- Show view form is user is logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfset StructDelete(Application, 'viewMemory', true)/>
 		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
-		<cfmodule template="./customtags/viewcomponent.cfm">
+		<cfmodule template="./customtags/fallback.cfm" heading="OOPS" content="THIS PRODUCT DOESN'T EXIST">
 	</cfif>
 	<!--- <cfdump var="#Form#"> --->
 

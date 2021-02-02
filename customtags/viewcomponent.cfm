@@ -1,15 +1,15 @@
 <cfoutput>
 	<div class="formcontainer" style="height:50%">
 
-		<h1 class="heading">Viewing product <cfoutput>#attributes.productCode_param#</cfoutput></h1>
+		<h1 class="heading" name="view_productcode"></h1>
 
 		<form class="form-content" name="viewform">
 			<div class="formfield productname">
-				<h3 class="view-header"><cfoutput>#attributes.productName_param#</cfoutput></h3>
+				<h3 class="view-header" name="view_productname"></h3>
 			</div>
 			
 			<div class="formfield productdescription">
-				<h3 class="view-header" style="color: rgb(129, 122, 152)"><cfoutput>#attributes.productDesc_param#</cfoutput></h3>
+				<h3 class="view-header" name="view_productdesc" style="color: rgb(129, 122, 152)"></h3>
 			</div>
 
 			<div class="formfield submitbutton">

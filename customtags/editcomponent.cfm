@@ -1,17 +1,17 @@
 <cfoutput>
 	<div class="formcontainer">
 
-		<h1 class="heading">Editing product <cfoutput>#attributes.productCode_param#</cfoutput></h1>
+		<h1 class="heading" name="edit_productcode"></h1>
 
 		<form class="form-content" name="editform">
 			<div class="formfield productname">
 				<h3 class="formfield-header">Product Name</h3>
-				<input spellcheck="false" required autocomplete="off" class="form-input" type="text" name="productname" value='<cfoutput>#attributes.productName_param#</cfoutput>'>
+				<input name="edit_productname" spellcheck="false" required autocomplete="off" class="form-input" type="text">
 			</div>
 			
 			<div class="formfield productdescription">
 				<h3 class="formfield-header">Product Description</h3>
-				<input spellcheck="false" required autocomplete="off" class="form-input" type="text" name="productdesc" value='<cfoutput>#attributes.productDesc_param#</cfoutput>'>
+				<input name="edit_productdesc" spellcheck="false" required autocomplete="off" class="form-input" type="text">
 			</div>
 
 			<div class="formfield submitbutton">

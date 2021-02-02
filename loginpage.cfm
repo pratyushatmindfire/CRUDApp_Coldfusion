@@ -1,4 +1,4 @@
-<cfmodule template="./customtags/htmlheader.cfm" pagetitle="Login Page">
+<cfmodule template="./customtags/htmlheader.cfm" pagetitle="Login">
 
 	<cfoutput>
 		<cfset variables.errorsList=ArrayNew(1)/>

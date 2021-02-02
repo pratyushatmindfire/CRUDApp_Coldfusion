@@ -1,4 +1,4 @@
-<cfcomponent output="true">
+<cfcomponent output="false">
 	<!--- 
 	Delete a product from database based on its product code
 
@@ -72,30 +72,58 @@
 	Output:
 	A query, which gives the details of the product that matches the product ID	
 	--->
-	<cffunction name="getProductbyId" returntype="query">
+	<cffunction name="getProductbyId" access="remote" returntype="query" returnFormat="JSON">
 		<cfargument name="productCodetoSearch" required="true" type="string">
 
-		<cfquery name="getSingleProduct">
-			SELECT productCode, productName, productDesc 
-			FROM myproducts
-			WHERE productCode = <cfqueryparam value = "#arguments.productCodetoSearch#" cfsqltype="cf_sql_varchar">;
-    	</cfquery>
+		<cftry>
+			<cfquery name="getSingleProduct">
+				SELECT productCode, productName, productDesc 
+				FROM myproducts
+				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoSearch#" cfsqltype="cf_sql_varchar">;
+    		</cfquery>
+
+    		<cfcatch type="any">
+    			<cflocation url="somethingwentwrong.cfm"/>
+    		</cfcatch>
+    	</cftry>
 
   		<cfreturn getSingleProduct/>
 	</cffunction>
 
 
+	<!--- 
+	Fetch record of all products from database
+	
+	Output:
+	A query, which gives record of all products present in database
+	--->
 	<cffunction name="getAllProducts" access="remote" returntype="query" returnFormat="JSON">
 
+		<cftry>
 		<cfquery name="allProducts">
 			SELECT productCode, productName FROM myproducts;
     	</cfquery>
+
+    	<cfcatch type="any">
+    			<cflocation url="somethingwentwrong.cfm"/>
+    		</cfcatch>
+    	</cftry>
 
   		<cfreturn allProducts/>
 	</cffunction>
 
 
+	<!--- 
+	Create a new product in the database
 
+	Input :
+	productCodetoCreate: A string type argument, which is the new product's identification code
+	productNametoCreate: A string type argument, which is the new product's name
+	productDesctoCreate: A string type argument, which is the new product's description
+	
+	Output:
+	A query, which gives the details of the product that matches the product ID	
+	--->
 	<cffunction name="createNewItem" access="remote" returntype="boolean">
 		<cfargument name="productCodetoCreate" required="true" type="string">
 		<cfargument name="productNametoCreate" required="true" type="string">
