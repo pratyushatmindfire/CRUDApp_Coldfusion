@@ -22,7 +22,9 @@
 
 			<div class="formfield submitbutton">
 				<input class="form-submit" type="button" name="loginButton" value="Create" onclick="event.preventDefault(); createItem();">
-			</div>
+
+				<input class="form-submit" type="button" value="Back to Dashboard" onclick="event.preventDefault(); window.location='/CRUDApp/dashboard.cfm';">
+			</div>	 
 		</form>
 	</div>
 

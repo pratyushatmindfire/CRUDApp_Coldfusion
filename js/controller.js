@@ -6,7 +6,7 @@ function deleteItem(codetoDelete){
     cache: false,
     data: {method: "deleteItembyCode", productCodetoDelete: (codetoDelete)},
     success: function (deleteStatus){
-      if(deleteStatus.includes("<boolean value='true'/>"))
+      if(deleteStatus==="true")
       {
         window.location='/CRUDApp/dashboard.cfm';
       }
@@ -37,7 +37,7 @@ function editItem(codetoEdit)
     data: {method: "editItembyCode", productCodetoEdit: (codetoEdit), newproductname: (new_productname), newproductdesc: (new_productdesc) },
     success: function (editStatus){
 
-      if(editStatus.includes("<boolean value='true'/>"))
+      if(editStatus==="true")
       {
         window.location='/CRUDApp/dashboard.cfm';
       }
@@ -70,7 +70,7 @@ function createItem()
     data: {method: "createNewItem", productCodetoCreate: (new_productcode), productNametoCreate: (new_productname), productDesctoCreate: (new_productdesc) },
     success: function (createStatus){
 
-      if(createStatus.includes("<boolean value='true'/>"))
+      if(createStatus==="true")
       {
         window.location='/CRUDApp/dashboard.cfm';
       }
@@ -258,7 +258,7 @@ function loadDeleteComponentData(code)
 function loginUser()
 {
   event.preventDefault();
-  console.log("Logging in");
+  console.log("Validating");
 
   $.ajax({
     url: "./services/authentication.cfc", 
@@ -268,16 +268,14 @@ function loginUser()
     success: function (validatorResponse){
       if(validatorResponse==="true")
       {
+        console.log("Logging in");
         $.ajax({
           url: "./services/authentication.cfc", 
           type: "post",
           cache: false,
           data: {method: "doLogin", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
           success: function (loginResponse){
-          if(loginResponse==="true")
-          {
             window.location='/CRUDApp/loginpage.cfm';
-          }
           },
           error: function (xhr, textStatus, errorThrown){
             window.location='/CRUDApp/somethingwentwrong.cfm'; //This will alert you of any errors.
@@ -321,5 +319,23 @@ function logoutUser()
       window.location='/CRUDApp/somethingwentwrong.cfm'; 
       }
       });
+
+}
+
+function exportData(mode)
+{
+  console.log("Exporting to", mode);
+
+  if(mode==="PDF")
+  {
+    window.open('/CRUDApp/pdfexport.cfm');
+  }
+
+  else if(mode="Excel")
+  {
+    window.open('/CRUDApp/excelexport.cfm');
+  }
+
+  $('select[name="exportOptions"]')[0].value="none"
 
 }

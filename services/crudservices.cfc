@@ -8,7 +8,7 @@
 	Output:
 	A boolean, which gives the status of delete query	
 	--->
-	<cffunction name="deleteItembyCode" access="remote" returnType="boolean">
+	<cffunction name="deleteItembyCode" access="remote" returnType="boolean" returnFormat="JSON">
 		<cfargument name="productCodetoDelete" required="true" type="string">
 
 		<cftry>
@@ -18,7 +18,7 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<!--- <cflog log="Application" file="appexceptionLog" text="Whatever you want to log." type="error" > --->
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
 			<cfreturn false/>
 		</cfcatch>
 		</cftry>
@@ -38,7 +38,7 @@
 	Output:
 	A boolean, which gives the status of delete query	
 	--->
-	<cffunction name="editItembyCode" access="remote" returnType="boolean">
+	<cffunction name="editItembyCode" access="remote" returnType="boolean" returnFormat="JSON">
 		<cfargument name="productCodetoEdit" required="true" type="string">
 		<cfargument name="newproductname" required="true" type="string">
 		<cfargument name="newproductdesc" required="true" type="string">
@@ -53,10 +53,8 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<!--- <cflog log="Application" file="myapplog"
-			text="Exception error -- Template: #error.template#"> --->
-
-					<cfreturn false/>
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfreturn false/>
 		</cfcatch>
 		</cftry>
 
@@ -83,6 +81,7 @@
     		</cfquery>
 
     		<cfcatch type="any">
+    			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
     			<cflocation url="somethingwentwrong.cfm"/>
     		</cfcatch>
     	</cftry>
@@ -101,12 +100,13 @@
 
 		<cftry>
 		<cfquery name="allProducts">
-			SELECT productCode, productName FROM myproducts;
+			SELECT productCode, productName, productDesc FROM myproducts;
     	</cfquery>
 
     	<cfcatch type="any">
-    			<cflocation url="somethingwentwrong.cfm"/>
-    		</cfcatch>
+    		<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+    		<cflocation url="somethingwentwrong.cfm"/>
+    	</cfcatch>
     	</cftry>
 
   		<cfreturn allProducts/>
@@ -124,11 +124,12 @@
 	Output:
 	A query, which gives the details of the product that matches the product ID	
 	--->
-	<cffunction name="createNewItem" access="remote" returntype="boolean">
+	<cffunction name="createNewItem" access="remote" returntype="boolean" returnFormat="JSON">
 		<cfargument name="productCodetoCreate" required="true" type="string">
 		<cfargument name="productNametoCreate" required="true" type="string">
 		<cfargument name="productDesctoCreate" required="true" type="string">
 
+		<cftry>
 		<cfset session.createErrors=ArrayNew(1)/>
 
 		<cfif arguments.productCodetoCreate.trim() EQ '' OR arguments.productNametoCreate.trim() EQ '' OR arguments.productDesctoCreate.trim() EQ ''>
@@ -161,6 +162,12 @@
 		<cfif ArrayLen(session.createErrors) EQ 0>
 			<cfreturn true/>
 		</cfif>
+
+		<cfcatch type="any">
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cflocation url="somethingwentwrong.cfm"/>
+		</cfcatch>
+		</cftry>
 		
   		<cfreturn false />
 	</cffunction>

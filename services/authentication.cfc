@@ -12,7 +12,7 @@
 	<cffunction name="validateUser" access="remote" output="false" returntype="boolean" returnformat="JSON">
 		<cfargument name="userName" type="string" required="true" />
 		<cfargument name="userPassword" type="string" required="true" />
-		<!--- <cfdump output = "D:/applog.html" format = "html" var="#arguments#"> --->
+		<cftry>
 		<cfset session.aErrorMessages = ArrayNew(1) />
 		<!---Validate the eMail---->
 		<cfif arguments.userName EQ ''>
@@ -29,6 +29,12 @@
 		<cfelse>
 			<cfreturn false/>
 		</cfif>
+
+		<cfcatch type="any">
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cflocation url="somethingwentwrong.cfm"/>
+		</cfcatch>
+		</cftry>
 	</cffunction>
 
 
@@ -72,6 +78,7 @@
 		</cfif>
 
 		<cfcatch type="any">
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -90,11 +97,13 @@
 	<cffunction name="doLogout" access="remote" output="false" returntype="boolean" returnformat="JSON">
 		<cftry>
 		<cfset StructDelete(session,'loggedInUser') />
-		<cfset StructDelete(session, 'editMemory', true)/>
-		<cfset StructDelete(session, 'deleteMemory', true)/>
-		<cfset StructDelete(session, 'viewMemory', true)/>
+
+		<cfset StructDelete(cookie, 'editMemory.editId', true)/>
+		<cfset StructDelete(cookie, 'viewMemory.viewId', true)/>
+		<cfset StructDelete(cookie, 'deleteMemory.deleteId', true)/>
 
 		<cfcatch type="any">
+			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

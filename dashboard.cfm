@@ -2,9 +2,9 @@
 
 <body onload="seedDashboard();">
 
-	<cfset StructDelete(session, 'editMemory', true)/>
-	<cfset StructDelete(session, 'deleteMemory', true)/>
-	<cfset StructDelete(session, 'viewMemory', true)/>
+	<cfset StructDelete(cookie, 'editMemory.editId', true)/>
+	<cfset StructDelete(cookie, 'deleteMemory.deleteId', true)/>
+	<cfset StructDelete(cookie, 'viewMemory.viewId', true)/>
 
 	<!--- Redirect to login if user has not logged in --->
 	<cfif NOT structKeyExists(session, 'loggedInUser')>

@@ -9,48 +9,19 @@
 		<cfset variables.isuserLoggedIn=true/>
 	</cfoutput>
 
-	<cfdump var=#session#>
 	
-<!--- 	<cfif structkeyexists(URL, 'logout')>
-		<cfscript>
-		WriteOutput('
-		<script language="JavaScript">
-			
-		</script>');
-		</cfscript>
-		<cfinvoke component="MyServices.authentication" method="doLogout" returnvariable="isuserLoggedIn">
-		</cfinvoke>
-	</cfif> --->
-
-
-	<!--- <cfif structKeyExists(Form, 'loginButton')>
-
-		<cfset authenticationService=createObject("component","MyServices.authentication")/>
-		<cfscript>
-			authenticationService.validateUser(Form.name, Form.password);
-		</cfscript>
-		<cfset variables.errorsList=session.aErrorMessages />
-
-		<cfif ArrayisEmpty(errorsList)>
-		
-			<cfset variables.isUserLoggedIn = authenticationService.doLogin(Form.name, Form.password)/>
-		</cfif>
-	</cfif> --->
-
-
 <body>
 	<!-- User has logged in -->
-	<cfdump var=#errorsList#/>
-	<cfdump var=#Form#/>
+	<cfdump var=#cookie#/>
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfif structkeyexists(session, 'editMemory')>
-			<cflocation url="editpage.cfm?codetoEdit=#session.editMemory.editId#">
+		<cfif structkeyexists(cookie, 'editMemory.editId')>
+			<cflocation url="editpage.cfm?codetoEdit=#cookie.editMemory.editId#">
 
-		<cfelseif structkeyexists(session, 'deleteMemory')>
-			<cflocation url="confirmdelete.cfm?codetoDelete=#session.deleteMemory.deleteId#">
+		<cfelseif structkeyexists(cookie, 'deleteMemory.deleteId')>
+			<cflocation url="confirmdelete.cfm?codetoDelete=#cookie.deleteMemory.deleteId#">
 
-		<cfelseif structkeyexists(session, 'viewMemory')>
-			<cflocation url="view.cfm?codetoView=#session.viewMemory.viewId#">
+		<cfelseif structkeyexists(cookie, 'viewMemory.viewId')>
+			<cflocation url="view.cfm?codetoView=#cookie.viewMemory.viewId#">
 
 		<cfelse>
 			<cflocation url="dashboard.cfm">
