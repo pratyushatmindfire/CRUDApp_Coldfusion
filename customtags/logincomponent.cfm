@@ -21,7 +21,7 @@
 		</form>
 </div>
 		
-		<!--- <cfdump var="#attributes#"> --->
+		
 		<!-- Validation error -->
 		<cfif NOT ArrayIsEmpty(attributes.errorMessages)>
 			<cfoutput>

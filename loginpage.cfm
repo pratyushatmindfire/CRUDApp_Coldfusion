@@ -12,7 +12,6 @@
 	
 <body>
 	<!-- User has logged in -->
-	<cfdump var=#cookie#/>
 	<cfif structKeyExists(session, 'loggedInUser')>
 		<cfif structkeyexists(cookie, 'editMemory.editId')>
 			<cflocation url="editpage.cfm?codetoEdit=#cookie.editMemory.editId#">
@@ -32,9 +31,6 @@
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton') OR NOT ArrayIsEmpty(errorsList)>
 		<cfmodule template="./customtags/logincomponent.cfm" errorMessages=#variables.errorsList# userMissing="#NOT variables.isuserLoggedIn#" headingLine="Login">
 	</cfif>
-	<!--- <cfdump var="#Session#"> --->
-
-	<!--- <cfdump var="#errorsList#"> --->
 
 </body>
 </html>

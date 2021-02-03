@@ -1,8 +1,12 @@
 <cfcomponent output="true">
+	<!--- 
+	Generate a PDF file for existing products data
+	Dependent on getAllProducts function of crudservices
+	--->
 	<cffunction name="exporttoPDF" output="true" access="remote">
 
 		<cftry>
-		<cfset allProducts = CreateObject("Component", "crudservices" ).getAllProducts()>
+		<cfset local.allProducts = CreateObject("Component", "crudservices" ).getAllProducts()>
 		<cfheader name="Content-Disposition" value="attachment; filename=exportDataPDF_#TimeFormat(Now())#.pdf">
 		<cfcontent type="application/pdf">
 		<cfdocument format="PDF">
@@ -17,9 +21,9 @@
 
 				<cfoutput query="allProducts">
 					<tr>
-						<td style="text-align: center; font-family: sans-serif">#allProducts.PRODUCTCODE#</td>
-						<td style="text-align: center; font-family: sans-serif">#allProducts.PRODUCTNAME#</td>
-						<td style="text-align: center; font-family: sans-serif">#allProducts.PRODUCTDESC#</td>
+						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTCODE#</td>
+						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTNAME#</td>
+						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTDESC#</td>
 					</tr>
 				</cfoutput>
 			</table>
@@ -33,34 +37,21 @@
 		</cftry>
 	</cffunction>
 
-
-
+	<!--- 
+	Generate an xls file for existing products data
+	Dependent on getAllProducts function of crudservices
+	--->
 	<cffunction name="exporttoExcel" output="true" access="remote">
-
 		<cftry>
-		<cfset allProducts = CreateObject("Component", "crudservices" ).getAllProducts()>
+		<cfset local.allProducts = CreateObject("Component", "crudservices" ).getAllProducts()>
 		
-		<cfheader name="Content-Disposition" value="attachment; filename=exportDataExcel.xls">
-		<cfcontent type="application/vnd.ms-excel">
-		
-		
-      	<table border="1">
-         		<tr>
-            		<td>Product Code</td>
-            		<td>Product Name</td>
-            		<td>Product Description</td>
-         		</tr>
-         	<cfoutput query="allProducts">
-            	<tr>
-               		<td>#allProducts.PRODUCTCODE#</td>
-               		<td>#allProducts.PRODUCTNAME#</td>
-               		<td>#allProducts.PRODUCTDESC#</td>
-            	</tr>
-         	</cfoutput>
-      	</table>
-   		</cfcontent>
-		
+		<cfset newSheet = spreadsheetNew()>
+		<cfset spreadsheetAddRow(newSheet, "ID, Name, Description")>
+		<cfset spreadsheetFormatRow(newSheet,{bold=true, fgcolor="lemon_chiffon", fontsize=16}, 1)>
+		<cfset spreadsheetAddRows(newSheet, local.allProducts)>	
 
+		<cfheader name="content-disposition" value="attachment; filename=exportDataExcel_#TimeFormat(Now())#.xls">
+		<cfcontent type="application/msexcel" variable="#spreadsheetReadBinary(newSheet)#" reset="true">
 		<cfcatch type="any">
 			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
 			<cflocation url="somethingwentwrong.cfm"/>

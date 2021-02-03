@@ -13,7 +13,6 @@
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
 		<cflocation url="loginpage.cfm">
 	</cfif>
-	<!--- <cfdump var="#Form#"> --->
 
 </body>
 </html>

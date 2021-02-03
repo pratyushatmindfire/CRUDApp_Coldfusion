@@ -260,11 +260,14 @@ function loginUser()
   event.preventDefault();
   console.log("Validating");
 
+  var nameofUser=$('input[name="username"]')[0].value;
+  var passwordofUser=$('input[name="userpassword"]')[0].value;
+
   $.ajax({
     url: "./services/authentication.cfc", 
     type: "post",
     cache: false,
-    data: {method: "validateUser", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
+    data: {method: "validateUser", userName: (nameofUser), userPassword: (passwordofUser)},
     success: function (validatorResponse){
       if(validatorResponse==="true")
       {
@@ -273,7 +276,7 @@ function loginUser()
           url: "./services/authentication.cfc", 
           type: "post",
           cache: false,
-          data: {method: "doLogin", userName: ($('input[name="username"]')[0].value), userPassword: ($('input[name="userpassword"]')[0].value)},
+          data: {method: "doLogin", userName: (nameofUser), userPassword: (passwordofUser)},
           success: function (loginResponse){
             window.location='/CRUDApp/loginpage.cfm';
           },
@@ -336,6 +339,6 @@ function exportData(mode)
     window.open('/CRUDApp/excelexport.cfm');
   }
 
-  $('select[name="exportOptions"]')[0].value="none"
+  $('select[name="exportOptions"]')[0].value="none";
 
 }

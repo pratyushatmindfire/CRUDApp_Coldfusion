@@ -2,11 +2,10 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>My Custom Component</title>
+<title>Export Excel Sheet</title>
 </head>
 
 <body>
-
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
 		<cflocation url="loginpage.cfm">
 	</cfif>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Export to PDF</title>
+<title>Export PDF</title>
 </head>
 
 <body>

@@ -5,7 +5,6 @@
 	
 	<!--- Show login form if user isnt logged in --->
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
-		<!--- <cfset session.deleteMemory = {'deleteId'= url.codetoDelete}/> --->
 		<cfcookie name = "deleteMemory.deleteId" value = "#url.codetoDelete#">
 		<cflocation url="loginpage.cfm">
 	</cfif>
