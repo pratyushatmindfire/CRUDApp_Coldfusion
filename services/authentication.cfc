@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="false" displayname="authenticationServiceComponent" extends="loggerService">
 	<!--- 
 	Validate the form field inputs
 
@@ -31,7 +31,7 @@
 		</cfif>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -63,22 +63,22 @@
 			SELECT username, password, employee_id FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
 			AND
-			BINARY password=<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />
+			BINARY password=md5(<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />);
 		</cfquery>
 
 
 		<cfif userDetected.recordCount EQ 1>
 
 			<cfset session.loggedInUser = {'userID' = checkUser.employee_id, 'userName' = checkUser.username} />
-
 			<cfset isUserLoggedIn = true />
+			<cfset sessionRotate()/>
 
 		<cfelse>
 			<cfset arrayAppend(session.aErrorMessages,'User not found') />
 		</cfif>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -103,7 +103,7 @@
 		<cfset StructDelete(cookie, 'deleteMemory.deleteId', true)/>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

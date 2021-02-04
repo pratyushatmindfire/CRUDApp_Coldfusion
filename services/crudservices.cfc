@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="false" displayname="crudServiceComponent" extends="loggerService">
 	<!--- 
 	Delete a product from database based on its product code
 
@@ -18,7 +18,7 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cfreturn false/>
 		</cfcatch>
 		</cftry>
@@ -53,7 +53,7 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cfreturn false/>
 		</cfcatch>
 		</cftry>
@@ -81,7 +81,7 @@
     		</cfquery>
 
     		<cfcatch type="any">
-    			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+    			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
     			<cflocation url="somethingwentwrong.cfm"/>
     		</cfcatch>
     	</cftry>
@@ -104,7 +104,7 @@
     	</cfquery>
 
     	<cfcatch type="any">
-    		<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+    		<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
     		<cflocation url="somethingwentwrong.cfm"/>
     	</cfcatch>
     	</cftry>
@@ -137,6 +137,7 @@
 		</cfif>
 
 		<!--- Check if product with that code already exists, return false if it does --->
+		<cfset var existence=''>
 		<cfquery name="checkExistence" result="existence">
 			SELECT productCode FROM myproducts
 			WHERE productCode = <cfqueryparam value = #arguments.productCodetoCreate# cfsqltype = "cf_sql_varchar">;
@@ -164,7 +165,7 @@
 		</cfif>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

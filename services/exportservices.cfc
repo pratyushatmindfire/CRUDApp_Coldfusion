@@ -1,4 +1,4 @@
-<cfcomponent output="true">
+<cfcomponent output="false" displayname="exportServiceComponent" extends="loggerService">
 	<!--- 
 	Generate a PDF file for existing products data
 	Dependent on getAllProducts function of crudservices
@@ -31,7 +31,7 @@
 		</cfdocument>
 
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -53,7 +53,7 @@
 		<cfheader name="content-disposition" value="attachment; filename=exportDataExcel_#TimeFormat(Now())#.xls">
 		<cfcontent type="application/msexcel" variable="#spreadsheetReadBinary(newSheet)#" reset="true">
 		<cfcatch type="any">
-			<cflog file="myAppLog" application="yes" text="Type=#cfcatch.type# Message=#cfcatch.message#">
+			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

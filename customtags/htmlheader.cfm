@@ -10,4 +10,38 @@
 <link rel="stylesheet" href="./css/appstyler.css">
 
 </head>
+
+<cfif attributes.pagetitle EQ "View Page">
+	<cfif NOT structKeyExists(url, 'codetoView')>
+		<cflocation url="dashboard.cfm">
+	</cfif>
+
+	<cfif NOT structKeyExists(session, 'loggedInUser')>
+		<cfcookie name = "viewMemory.viewId" value = "#url.codetoView#">
+		<cflocation url="loginpage.cfm">
+	</cfif>
+</cfif>
+
+<cfif attributes.pagetitle EQ "Edit Page">
+	<cfif NOT structKeyExists(url, 'codetoEdit')>
+		<cflocation url="dashboard.cfm">
+	</cfif>
+
+	<cfif NOT structKeyExists(session, 'loggedInUser')>
+		<cfcookie name = "editMemory.editId" value = "#url.codetoEdit#">
+		<cflocation url="loginpage.cfm">
+	</cfif>
+</cfif>
+
+<cfif attributes.pagetitle EQ "Confirm Delete">
+	<cfif NOT structKeyExists(url, 'codetoDelete')>
+		<cflocation url="dashboard.cfm">
+	</cfif>
+
+	<cfif NOT structKeyExists(session, 'loggedInUser')>
+		<cfcookie name = "deleteMemory.deleteId" value = "#url.codetoDelete#">
+		<cflocation url="loginpage.cfm">
+	</cfif>
+</cfif>
+
 </cfoutput>
