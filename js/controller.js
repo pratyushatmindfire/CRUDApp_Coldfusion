@@ -108,6 +108,39 @@ function seedDashboard()
       });
 }
 
+
+
+
+
+function seedDashboardCatchTest()
+{
+  $.ajax({
+    url: "./crudcfcatch.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getAllProducts"},
+    success: function (retrievedData){
+      var dashboardReference = $('#dashboardcontent');
+        let response=JSON.parse(retrievedData).DATA;
+        console.log(response);
+
+        for(let each of response)
+        {
+          dashboardcontent.innerHTML+= generateDashboardItem(each[0], each[1]);
+        }
+      },
+    error: function (xhr, textStatus, errorThrown){
+     console.log("Error!!")
+     console.log(errorThrown);
+      }
+      });
+}
+
+
+
+
+
+
 function generateDashboardItem(code, name)
 {
   return '<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox"><div class="container eachItem"><div class="itemheader"><p>'
@@ -132,13 +165,14 @@ function getAllItems()
         return response;
       },
     error: function (xhr, textStatus, errorThrown){
-      console.log(errorThrown); //This will alert you of any errors.
+      window.location='/CRUDApp/somethingwentwrong.cfm'; //This will alert you of any errors.
       }
       });
 }
 
 function urlgen(mode, code)
 {
+
   if(mode==='view')
   {
     return "window.location='/CRUDApp/view.cfm?codetoView="+code+"'";

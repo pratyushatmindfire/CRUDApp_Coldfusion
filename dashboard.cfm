@@ -18,6 +18,7 @@
 
 		<h1 id="actionheader">List of Products</h1>
 		<div class="row" id="dashboardcontent">
+
 		</div>
 	</cfif>
 

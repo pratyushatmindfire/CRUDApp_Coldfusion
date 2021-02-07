@@ -140,7 +140,7 @@ body
     margin-right: 0.3em;
 }
 
-.logoutbutton:hover, .backbutton:hover, .addbutton:hover, .exportOptionsbutton:hover
+.backbutton:hover, .exportOptionsbutton:hover
 {
 	text-decoration: none;
 	background-color: #a1a6b6;
@@ -150,6 +150,26 @@ body
     cursor: pointer;
 }
 
+.logoutbutton:hover
+{
+    text-decoration: none;
+    background-color: #b03030;
+    color: #ffe06f;
+    border: 2px solid #dfdfdf;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+
+.addbutton:hover
+{
+    text-decoration: none;
+    background-color: #591a7f;
+    color: #dcdcdc;
+    border: 2px solid #dfdfdf;
+    transition: 0.3s;
+    cursor: pointer;
+}
 #actionheader
 {
     font-size: medium;

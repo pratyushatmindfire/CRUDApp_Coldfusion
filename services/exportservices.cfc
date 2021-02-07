@@ -31,7 +31,7 @@
 		</cfdocument>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -53,7 +53,7 @@
 		<cfheader name="content-disposition" value="attachment; filename=exportDataExcel_#TimeFormat(Now())#.xls">
 		<cfcontent type="application/msexcel" variable="#spreadsheetReadBinary(newSheet)#" reset="true">
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

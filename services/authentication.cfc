@@ -31,7 +31,7 @@
 		</cfif>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -78,7 +78,7 @@
 		</cfif>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
@@ -103,7 +103,7 @@
 		<cfset StructDelete(cookie, 'deleteMemory.deleteId', true)/>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>

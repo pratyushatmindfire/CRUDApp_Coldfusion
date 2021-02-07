@@ -1,4 +1,4 @@
-<cfcomponent output="false" displayname="crudServiceComponent" extends="loggerService">
+<cfcomponent output="true" displayname="crudServiceComponent" extends="loggerService">
 	<!--- 
 	Delete a product from database based on its product code
 
@@ -18,7 +18,7 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cfreturn false/>
 		</cfcatch>
 		</cftry>
@@ -53,7 +53,7 @@
 		</cfquery>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cfreturn false/>
 		</cfcatch>
 		</cftry>
@@ -81,7 +81,7 @@
     		</cfquery>
 
     		<cfcatch type="any">
-    			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+    			<cfset Super.exceptionLogger(cfcatch)/>
     			<cflocation url="somethingwentwrong.cfm"/>
     		</cfcatch>
     	</cftry>
@@ -100,16 +100,17 @@
 
 		<cftry>
 		<cfquery name="allProducts">
-			SELECT productCode, productName, productDesc FROM myproducts;
+			SELECT productCode, productName, productDesc 
+			FROM myproducts;
     	</cfquery>
 
+    	<cfreturn allProducts/>
+
     	<cfcatch type="any">
-    		<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+    		<cfset Super.exceptionLogger(cfcatch)/>
     		<cflocation url="somethingwentwrong.cfm"/>
     	</cfcatch>
     	</cftry>
-
-  		<cfreturn allProducts/>
 	</cffunction>
 
 
@@ -165,7 +166,7 @@
 		</cfif>
 
 		<cfcatch type="any">
-			<cfset var loggerInstance = Super.exceptionLogger(#cfcatch.type#, #cfcatch.message#, #cfcatch.detail#)>
+			<cfset Super.exceptionLogger(cfcatch)/>
 			<cflocation url="somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
