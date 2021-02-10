@@ -4,7 +4,7 @@ function deleteItem(codetoDelete){
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "deleteItembyCode", productCodetoDelete: (codetoDelete)},
+    data: {method: "deleteItembyCode", productCodetoDelete: (atob(codetoDelete))},
     success: function (deleteStatus){
       if(deleteStatus==="true")
       {
@@ -34,7 +34,7 @@ function editItem(codetoEdit)
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "editItembyCode", productCodetoEdit: (codetoEdit), newproductname: (new_productname), newproductdesc: (new_productdesc) },
+    data: {method: "editItembyCode", productCodetoEdit: (atob(codetoEdit)), newproductname: (new_productname), newproductdesc: (new_productdesc) },
     success: function (editStatus){
 
       if(editStatus==="true")
@@ -175,17 +175,17 @@ function urlgen(mode, code)
 
   if(mode==='view')
   {
-    return "window.location='/CRUDApp/view.cfm?codetoView="+code+"'";
+    return "window.location='/CRUDApp/view.cfm?codetoView="+btoa(code)+"'";
   }
 
   if(mode==='edit')
   {
-    return "window.location='/CRUDApp/editpage.cfm?codetoEdit="+code+"'";
+    return "window.location='/CRUDApp/editpage.cfm?codetoEdit="+btoa(code)+"'";
   }
 
   if(mode==='delete')
   {
-    return "window.location='/CRUDApp/confirmdelete.cfm?codetoDelete="+code+"'";
+    return "window.location='/CRUDApp/confirmdelete.cfm?codetoDelete="+btoa(code)+"'";
   }
 }
 
@@ -198,7 +198,7 @@ function loadViewComponentData(code)
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    data: {method: "getProductbyId", productCodetoSearch: (atob(code))},
     success: function (retrievedData){
       console.log(JSON.parse(retrievedData).DATA);
         if(JSON.parse(retrievedData).DATA.length==0)
@@ -232,7 +232,7 @@ function loadEditComponentData(code)
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    data: {method: "getProductbyId", productCodetoSearch: (atob(code))},
     success: function (retrievedData){
       console.log(JSON.parse(retrievedData).DATA);
         if(JSON.parse(retrievedData).DATA.length==0)
@@ -266,7 +266,7 @@ function loadDeleteComponentData(code)
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getProductbyId", productCodetoSearch: (code)},
+    data: {method: "getProductbyId", productCodetoSearch: (atob(code))},
     success: function (retrievedData){
       console.log(JSON.parse(retrievedData).DATA);
         if(JSON.parse(retrievedData).DATA.length==0)

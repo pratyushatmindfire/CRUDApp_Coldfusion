@@ -30,9 +30,4 @@
 				</cfloop>
 			</cfoutput>
 		</cfif>
-
-		<!-- Unable to log in user -->
-		<cfif attributes.userMissing EQ true AND NOT structkeyexists(URL, 'logout')>
-			<p class="validatormessage">User not found. Try again</p>
-		</cfif>
 </cfoutput>

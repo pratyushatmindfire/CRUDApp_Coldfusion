@@ -6,7 +6,6 @@
 		<cfelse>
 			<cfset variables.errorsList=ArrayNew(1)/>
 		</cfif>
-		<cfset variables.isuserLoggedIn=true/>
 	</cfoutput>
 
 	
@@ -29,7 +28,7 @@
 
 	<!--- Show login if user isnt logged in --->
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton') OR NOT ArrayIsEmpty(errorsList)>
-		<cfmodule template="./customtags/logincomponent.cfm" errorMessages=#variables.errorsList# userMissing="#NOT variables.isuserLoggedIn#" headingLine="Login">
+		<cfmodule template="./customtags/logincomponent.cfm" errorMessages=#variables.errorsList# headingLine="Login">
 	</cfif>
 
 </body>

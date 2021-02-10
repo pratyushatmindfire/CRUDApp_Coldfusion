@@ -14,7 +14,7 @@
 		<cftry>
 		<cfquery name="deleteProduct">
 				DELETE FROM myproducts
-				WHERE productCode = <cfqueryparam value = "#productCodetoDelete#" cfsqltype = "cf_sql_varchar">;
+				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoDelete#" cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 
 		<cfcatch type="any">
@@ -47,9 +47,9 @@
 		<cftry>
 		<cfquery name="editProduct">
 				UPDATE myproducts
-				SET productName = <cfqueryparam value = "#newproductname#" cfsqltype = "cf_sql_varchar">, 
-				productDesc = <cfqueryparam value = "#newproductdesc#" cfsqltype = "cf_sql_varchar">
-				WHERE productCode = <cfqueryparam value = "#productCodetoEdit#" cfsqltype = "cf_sql_varchar">;
+				SET productName = <cfqueryparam value = "#arguments.newproductname#" cfsqltype = "cf_sql_varchar">, 
+				productDesc = <cfqueryparam value = "#arguments.newproductdesc#" cfsqltype = "cf_sql_varchar">
+				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoEdit#" cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 
 		<cfcatch type="any">
@@ -137,11 +137,20 @@
 			<cfset arrayAppend(session.createErrors,'Make sure to fill up all the fields') />
 		</cfif>
 
+		<cfif 
+		NOT isValid("regex", arguments.productCodetoCreate.trim(), "^[a-zA-Z0-9_]+$") 
+		OR 
+		NOT isValid("regex", arguments.productNametoCreate.trim(), "^[a-zA-Z0-9_ ]+$") 
+		OR 
+		NOT isValid("regex", arguments.productDesctoCreate.trim(), "^[a-zA-Z0-9_ ]+$")>
+			<cfset arrayAppend(session.createErrors,'Make sure to fill up valid content before inserting') />
+		</cfif>
+
 		<!--- Check if product with that code already exists, return false if it does --->
 		<cfset var existence=''>
 		<cfquery name="checkExistence" result="existence">
 			SELECT productCode FROM myproducts
-			WHERE productCode = <cfqueryparam value = #arguments.productCodetoCreate# cfsqltype = "cf_sql_varchar">;
+			WHERE productCode = <cfqueryparam value = #Trim(arguments.productCodetoCreate)# cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 
 		<cfif existence.recordcount NEQ 0 AND arguments.productCodetoCreate NEQ ''>

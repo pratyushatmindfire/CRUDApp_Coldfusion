@@ -15,7 +15,7 @@
 		<cftry>
 		<cfset session.aErrorMessages = ArrayNew(1) />
 		<!---Validate the eMail---->
-		<cfif arguments.userName EQ ''>
+		<cfif arguments.userName EQ '' OR NOT isValid("regex", arguments.userName, "^[A-Za-z][A-Za-z0-9_]*")>
 			<cfset arrayAppend(session.aErrorMessages,'Please, provide a valid userame') />
 		</cfif>
 		<!---Validate the password---->
@@ -32,7 +32,7 @@
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
-			<cflocation url="somethingwentwrong.cfm"/>
+			<cflocation url="/CRUDApp/somethingwentwrong.cfm"/>
 		</cfcatch>
 		</cftry>
 	</cffunction>
