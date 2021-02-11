@@ -93,8 +93,7 @@ function seedDashboard()
     cache: false,
     data: {method: "getAllProducts"},
     success: function (retrievedData){
-      var dashboardReference = $('#dashboardcontent');
-        let response=JSON.parse(retrievedData).DATA;
+        let response=JSON.parse(retrievedData);
         console.log(response);
 
         for(let each of response)
@@ -109,25 +108,16 @@ function seedDashboard()
 }
 
 
-
-
-
-function seedDashboardCatchTest()
+function getCache()
 {
   $.ajax({
-    url: "./crudcfcatch.cfc", 
+    url: "./services/loggerService.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getAllProducts"},
+    data: {method: "retrieveCache"},
     success: function (retrievedData){
-      var dashboardReference = $('#dashboardcontent');
-        let response=JSON.parse(retrievedData).DATA;
-        console.log(response);
-
-        for(let each of response)
-        {
-          dashboardcontent.innerHTML+= generateDashboardItem(each[0], each[1]);
-        }
+      var response = JSON.parse(retrievedData);
+      console.log(response);
       },
     error: function (xhr, textStatus, errorThrown){
      console.log("Error!!")
@@ -135,9 +125,6 @@ function seedDashboardCatchTest()
       }
       });
 }
-
-
-
 
 
 

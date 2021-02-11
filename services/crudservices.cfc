@@ -16,6 +16,7 @@
 				DELETE FROM myproducts
 				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoDelete#" cfsqltype = "cf_sql_varchar">;
 		</cfquery>
+		<cfset Super.syncronizeCache()/>
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
@@ -51,6 +52,8 @@
 				productDesc = <cfqueryparam value = "#arguments.newproductdesc#" cfsqltype = "cf_sql_varchar">
 				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoEdit#" cfsqltype = "cf_sql_varchar">;
 		</cfquery>
+
+		<cfset Super.syncronizeCache()/>
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
@@ -96,15 +99,19 @@
 	Output:
 	A query, which gives record of all products present in database
 	--->
-	<cffunction name="getAllProducts" access="remote" returntype="query" returnFormat="JSON">
+	<cffunction name="getAllProducts" access="remote" returntype="array" returnFormat="JSON">
 
 		<cftry>
-		<cfquery name="allProducts">
+		<cfset var cacheData = Super.retrieveCache()/>
+		<cfreturn cacheData/>
+
+
+		<!--- <cfquery name="allProducts">
 			SELECT productCode, productName, productDesc 
 			FROM myproducts;
     	</cfquery>
 
-    	<cfreturn allProducts/>
+    	<cfreturn allProducts/> --->
 
     	<cfcatch type="any">
     		<cfset Super.exceptionLogger(cfcatch)/>
@@ -168,6 +175,7 @@
 					<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">
 				);
 			</cfquery>
+			<cfset Super.syncronizeCache()/>
 		</cfif>
 
 		<cfif ArrayLen(session.createErrors) EQ 0>
@@ -182,5 +190,4 @@
 		
   		<cfreturn false />
 	</cffunction>
-
 </cfcomponent>

@@ -30,6 +30,7 @@
 	<cfif isuserLoggedIn EQ false OR NOT structKeyExists(Form, 'loginButton') OR NOT ArrayIsEmpty(errorsList)>
 		<cfmodule template="./customtags/logincomponent.cfm" errorMessages=#variables.errorsList# headingLine="Login">
 	</cfif>
+	<button onclick="getCache()">Cache Test</button>
 
 </body>
 </html>
