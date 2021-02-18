@@ -24,10 +24,6 @@
 		</cftry>
 	</cffunction>
 
-
-
-
-
 	<cffunction name="syncProductsCache" access="package" output="false" returntype="boolean" returnformat="JSON">
 
 		<cftry>
@@ -56,5 +52,27 @@
 				<cfreturn false/>
 			</cfcatch>
 		</cftry>
+	</cffunction>
+
+	<cffunction name="getSingleProductFromCache" access="package" output="false" returnformat="JSON">
+		<cfargument name="productCodetoSearchInCache" required="true" type="string">
+
+		<cftry>
+			<cfset var codeParam = arguments.productCodetoSearchInCache/>
+			<cfset var returnData = structNew()/>
+			<cfset var cacheData = Super.retrieveCache()/>
+	
+			<cfscript>
+				returnData.DATA=ArrayFilter(cacheData, function(item){ return item[1]==codeParam;});
+			</cfscript>
+
+			<cfcatch type="any">
+    			<cfset Super.exceptionLogger(cfcatch)/>
+    			<cflocation url="somethingwentwrong.cfm"/>
+    		</cfcatch>
+		</cftry>
+
+		<cfreturn returnData/>
+
 	</cffunction>
 </cfcomponent>

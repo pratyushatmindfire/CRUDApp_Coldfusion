@@ -26,4 +26,18 @@
 			</cfcatch>
 		</cftry>
 	</cffunction>
+
+	<cffunction name="getSingleCacheProduct" output="false" access="package" returnformat="JSON">
+		<cfargument name="productCodetoSearchFromCache" required="true" type="string">
+		<cftry>
+			<cfset var codeParam = arguments.productCodetoSearchFromCache/>
+			<cfset var cacheData = Super.getSingleProductFromCache(codeParam)/>
+			<cfreturn cacheData />
+
+			<cfcatch type="any">
+				<cfset exceptionLogger(cfcatch)/>
+				<cflocation url="somethingwentwrong.cfm"/>
+			</cfcatch>
+		</cftry>
+	</cffunction>
 </cfcomponent>

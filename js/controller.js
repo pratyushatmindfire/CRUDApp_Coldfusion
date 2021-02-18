@@ -205,6 +205,8 @@ function loadViewComponentData(code)
         } 
       },
     error: function (xhr, textStatus, errorThrown){
+      console.log(xhr);
+      console.log(textStatus);
       console.log(errorThrown);
        // window.location='/CRUDApp/somethingwentwrong.cfm';
       }

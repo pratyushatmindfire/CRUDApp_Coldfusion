@@ -77,12 +77,7 @@
 		<cfargument name="productCodetoSearch" required="true" type="string">
 		<cftry>
 			<cfset var codeParam = arguments.productCodetoSearch/>
-			<cfset var returnData = structNew()/>
-			<cfset var cacheData = Super.retrieveCache()/>
-
-			<cfscript>
-				returnData.DATA=ArrayFilter(cacheData, function(item){ return item[1]==codeParam;});
-			</cfscript>
+			<cfset var returnData = Super.getSingleCacheProduct(codeParam)/>
 		
 			<!--- <cfquery name="getSingleProduct">
 				SELECT productCode, productName, productDesc 
