@@ -178,7 +178,7 @@ function urlgen(mode, code)
 
 function loadViewComponentData(code)
 {
-  console.log(code);
+  console.log("Code is=", code);
 
   $.ajax(
   {
@@ -187,6 +187,7 @@ function loadViewComponentData(code)
     cache: false,
     data: {method: "getProductbyId", productCodetoSearch: (atob(code))},
     success: function (retrievedData){
+      console.log("Retrieved Data=", retrievedData);
       console.log(JSON.parse(retrievedData).DATA);
         if(JSON.parse(retrievedData).DATA.length==0)
         {
@@ -204,7 +205,8 @@ function loadViewComponentData(code)
         } 
       },
     error: function (xhr, textStatus, errorThrown){
-       window.location='/CRUDApp/somethingwentwrong.cfm';
+      console.log(errorThrown);
+       // window.location='/CRUDApp/somethingwentwrong.cfm';
       }
       }
     );

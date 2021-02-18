@@ -73,23 +73,30 @@
 	Output:
 	A query, which gives the details of the product that matches the product ID	
 	--->
-	<cffunction name="getProductbyId" access="remote" returntype="query" returnFormat="JSON">
+	<cffunction name="getProductbyId" access="remote" returntype="any" returnFormat="JSON">
 		<cfargument name="productCodetoSearch" required="true" type="string">
-
 		<cftry>
-			<cfquery name="getSingleProduct">
+			<cfset var codeParam = arguments.productCodetoSearch/>
+			<cfset var returnData = structNew()/>
+			<cfset var cacheData = Super.retrieveCache()/>
+
+			<cfscript>
+				returnData.DATA=ArrayFilter(cacheData, function(item){ return item[1]==codeParam;});
+			</cfscript>
+		
+			<!--- <cfquery name="getSingleProduct">
 				SELECT productCode, productName, productDesc 
 				FROM myproducts
 				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoSearch#" cfsqltype="cf_sql_varchar">;
-    		</cfquery>
+    		</cfquery> --->
 
     		<cfcatch type="any">
     			<cfset Super.exceptionLogger(cfcatch)/>
     			<cflocation url="somethingwentwrong.cfm"/>
     		</cfcatch>
     	</cftry>
-
-  		<cfreturn getSingleProduct/>
+    	<cfreturn returnData/>
+  		<!--- <cfreturn SerializeJSON(getSingleProduct)/> --->
 	</cffunction>
 
 

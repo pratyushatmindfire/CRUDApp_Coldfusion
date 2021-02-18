@@ -7,7 +7,7 @@
 	<!--- Set up the application. --->
 	<cfset THIS.Name = "AppCFC" />
 	<cfset THIS.ApplicationTimeout = CreateTimeSpan( 0, 0, 10, 0 ) />
-	<cfset This.SessionTimeout = createTimeSpan(0, 0, 1, 0) />
+	<cfset This.SessionTimeout = createTimeSpan(0, 0, 5, 0) />
 	<cfset THIS.SessionManagement = "Yes" />
 	<cfset THIS.SetClientCookies = true />
 	<cfset THIS.datasource = "classicmodels" />

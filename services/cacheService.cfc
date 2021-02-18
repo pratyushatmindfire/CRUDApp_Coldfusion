@@ -22,7 +22,6 @@
 				<cflocation url="somethingwentwrong.cfm"/>
 			</cfcatch>
 		</cftry>
-
 	</cffunction>
 
 
@@ -43,7 +42,7 @@
 				for (row in allProducts) 
 				{
     				arrayAppend(allProductsCacheObject, 
-    					[row.productCode, row.productName]
+    					[row.productCode, row.productName, row.productDesc]
     				);
 				}
 			</cfscript>
@@ -57,6 +56,5 @@
 				<cfreturn false/>
 			</cfcatch>
 		</cftry>
-
 	</cffunction>
 </cfcomponent>
