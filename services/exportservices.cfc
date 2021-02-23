@@ -19,12 +19,14 @@
 					<td style="text-align: center; font-family: sans-serif">Product Description</td>
 				</tr>
 
-				<cfoutput query="allProducts">
+				<cfoutput>
+				<cfloop array="#allProducts#" item="eachProduct">
 					<tr>
-						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTCODE#</td>
-						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTNAME#</td>
-						<td style="text-align: center; font-family: sans-serif">#local.allProducts.PRODUCTDESC#</td>
+						<td style="text-align: center; font-family: sans-serif">#eachProduct[1]#</td>
+						<td style="text-align: center; font-family: sans-serif">#eachProduct[2]#</td>
+						<td style="text-align: center; font-family: sans-serif">#eachProduct[3]#</td>
 					</tr>
+				</cfloop>
 				</cfoutput>
 			</table>
 			</div>
