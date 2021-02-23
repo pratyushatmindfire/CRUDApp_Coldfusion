@@ -60,7 +60,7 @@
 
 		
 		<cfquery name="checkUser" result="userDetected">
-			SELECT username, password, employee_id FROM user
+			SELECT username, password, employee_id, role FROM user
 			WHERE username=<cfqueryparam value="#arguments.userName#" cfsqltype="cf_sql_varchar" />
 			AND
 			BINARY password=md5(<cfqueryparam value="#arguments.userPassword#" cfsqltype="cf_sql_varchar" />);
@@ -69,7 +69,7 @@
 
 		<cfif userDetected.recordCount EQ 1>
 
-			<cfset session.loggedInUser = {'userID' = checkUser.employee_id, 'userName' = checkUser.username} />
+			<cfset session.loggedInUser = {'userID' = checkUser.employee_id, 'userName' = checkUser.username, 'role' = checkUser.role} />
 			<cfset isUserLoggedIn = true />
 			<cfset sessionRotate()/>
 

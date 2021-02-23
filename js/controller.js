@@ -1,3 +1,5 @@
+var userData = '';
+
 function deleteItem(codetoDelete){
 	console.log("Code to delete", codetoDelete);
   $.ajax({
@@ -87,7 +89,11 @@ function createItem()
 
 function seedDashboard()
 {
-  $.ajax({
+  getUserType().then(m => {
+    let userType=m.slice(1,-1);
+    console.log("UserData", userType);
+
+    $.ajax({
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
@@ -98,13 +104,62 @@ function seedDashboard()
 
         for(let each of response)
         {
-          dashboardcontent.innerHTML+= generateDashboardItem(each[0], each[1]);
+          dashboardcontent.innerHTML+= generateDashboardItem(each[0], each[1], userType);
         }
       },
     error: function (xhr, textStatus, errorThrown){
       window.location='/CRUDApp/somethingwentwrong.cfm';
       }
       });
+
+
+  });
+}
+
+function generateDashboardItem(code, name, role)
+{
+  if(role==="admin")
+  {
+    return '<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox"><div class="container eachItem"><div class="itemheader"><p>'
+  +code+
+  '</p></div><div class="itemname"><p>'
+  +name+
+  '</p></div><div class="makechanges"><button class="button leftcurve" value="View" id="'
+  +code+
+  '" onclick="'+urlgen('view', code)+'">View</button><button class="button" value="Edit" id="'+code+'" onclick="'+urlgen('edit', code)+'">Edit</button><button class="button rightcurve" value="Delete" id="'+code+'" onclick="'+urlgen('delete', code)+'">Delete</button></div></div></div>';
+  }
+
+  else
+  {
+    return '<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox"><div class="container eachItem"><div class="itemheader"><p>'
+  +code+
+  '</p></div><div class="itemname"><p>'
+  +name+
+  '</p></div><div class="userview"><button class="button" value="View" id="'
+  +code+
+  '" onclick="'+urlgen('view', code)+'">View</button>';
+  }
+  
+}
+
+async function getUserType()
+{
+  var userType='';
+  return await $.ajax({
+    url: "./services/userdataService.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getUserInfo"},
+    success: function (userTypeInfo){
+        userType=userTypeInfo;
+        console.log("Usertype", userType);
+        return userType;
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      });
+    console.log("Usertype main", userType);
 }
 
 
@@ -124,19 +179,6 @@ function getCache()
      console.log(errorThrown);
       }
       });
-}
-
-
-
-function generateDashboardItem(code, name)
-{
-  return '<div class="col-sm-12 col-md-6 col-lg-4 dynamic-gridbox"><div class="container eachItem"><div class="itemheader"><p>'
-  +code+
-  '</p></div><div class="itemname"><p>'
-  +name+
-  '</p></div><div class="makechanges"><button class="button leftcurve" value="View" id="'
-  +code+
-  '" onclick="'+urlgen('view', code)+'">View</button><button class="button" value="Edit" id="'+code+'" onclick="'+urlgen('edit', code)+'">Edit</button><button class="button rightcurve" value="Delete" id="'+code+'" onclick="'+urlgen('delete', code)+'">Delete</button></div></div></div>';
 }
 
 function getAllItems()

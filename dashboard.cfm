@@ -1,5 +1,5 @@
 <cfmodule template="./customtags/htmlheader.cfm" pagetitle="Dashboard">
-
+<cfdump var =#session#/>
 <body onload="seedDashboard();">
 
 	<cfset StructDelete(cookie, 'editMemory.editId', true)/>

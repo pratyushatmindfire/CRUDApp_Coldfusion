@@ -257,3 +257,23 @@ body
 {
     margin:0;
 }
+
+.userview .button
+{
+    border:0;
+    width: 100%;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+.userview .button:hover
+{
+    background-color: #a1a6b6;
+    color: #f7f3ff;
+    transition: 0.3s;
+}
+
+.userview .button:focus
+{
+    outline: 0;
+}

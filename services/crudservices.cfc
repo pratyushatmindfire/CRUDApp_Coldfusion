@@ -12,11 +12,13 @@
 		<cfargument name="productCodetoDelete" required="true" type="string">
 
 		<cftry>
+		<cfif session.loggedInUser.role EQ 'admin'>
 		<cfquery name="deleteProduct">
 				DELETE FROM myproducts
 				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoDelete#" cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 		<cfset Super.syncronizeCache()/>
+		</cfif>
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
@@ -46,6 +48,7 @@
 
 
 		<cftry>
+		<cfif session.loggedInUser.role EQ 'admin'>
 		<cfquery name="editProduct">
 				UPDATE myproducts
 				SET productName = <cfqueryparam value = "#arguments.newproductname#" cfsqltype = "cf_sql_varchar">, 
@@ -54,6 +57,7 @@
 		</cfquery>
 
 		<cfset Super.syncronizeCache()/>
+		</cfif>
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
