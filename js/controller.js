@@ -97,7 +97,7 @@ function seedDashboard()
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getAllProducts"},
+    data: {method: "getVerifiedProducts"},
     success: function (retrievedData){
         let response=JSON.parse(retrievedData);
         console.log(response);
@@ -114,6 +114,92 @@ function seedDashboard()
 
 
   });
+}
+
+function seedVerifyPanel()
+{
+  console.log("Duh");
+  console.log(document.getElementById('verifyPanel'));
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "getUnverifiedProducts"},
+    success: function (retrievedData){
+        let response=JSON.parse(retrievedData);
+        console.log(response);
+
+        for(let each of response)
+        {
+          verifyPanel.innerHTML+= generateVerificationItem(each[0], each[1], each[2]);
+        }
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      });
+}
+
+function doVerifyProduct(code)
+{
+  console.log(atob(code));
+  
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "acceptProduct", productCodetoAccept: (atob(code))},
+    success: function (response){
+        console.log(response);
+        if(response==='true')
+        {
+          // $('#'+atob(code))[0].style.display='none';
+          $('#'+atob(code))[0].style.display='none';
+          // window.location='/CRUDApp/verifyproducts.cfm';
+        }
+        
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      });
+}
+
+function doRejectProduct(code)
+{
+  console.log(code);
+  $.ajax({
+    url: "./services/crudservices.cfc", 
+    type: "post",
+    cache: false,
+    data: {method: "rejectProduct", productCodetoReject: (atob(code))},
+    success: function (response){
+        console.log(response);
+        if(response==='true')
+        { $('#'+atob(code))[0].style.display='none';
+          // window.location='/CRUDApp/verifyproducts.cfm';
+        }
+        
+      },
+    error: function (xhr, textStatus, errorThrown){
+      window.location='/CRUDApp/somethingwentwrong.cfm';
+      }
+      });
+}
+
+function generateVerificationItem(code, name, desc)
+{
+  return '<div id="'+code+'" class="formcontainer" style="height:50%"><h1 class="heading" name="view_productcode">'
+  +code+
+  '</h1><form class="form-content" name="viewform"><div class="formfield productname"><h3 class="view-header" name="view_productname">'
+  +name+
+  '</h3></div><div class="formfield productdescription"><h3 class="view-header" name="view_productdesc" style="color: rgb(129, 122, 152)">'
+  +desc+
+  '</h3></div> <div class="formfield submitbutton"><input  type="button" class="form-verify" name="verifybutton" value="Accept" onclick="event.preventDefault(); doVerifyProduct(\''
+  +btoa(code)+
+  '\');"><input type="button" class="form-verify" name="verifybutton" value="Reject" onclick="event.preventDefault(); doRejectProduct(\''
+  +btoa(code)+
+  '\')"></div></form></div>';
 }
 
 function generateDashboardItem(code, name, role)
@@ -187,7 +273,7 @@ function getAllItems()
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "getAllProducts"},
+    data: {method: "getVerifiedProducts"},
     success: function (retrievedData){
         let response=JSON.parse(retrievedData).DATA;
         console.log(response);

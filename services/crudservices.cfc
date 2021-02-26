@@ -1,4 +1,4 @@
-<cfcomponent output="true" displayname="crudServiceComponent" extends="loggerService">
+<cfcomponent output="false" displayname="crudServiceComponent" extends="loggerService">
 	<!--- 
 	Delete a product from database based on its product code
 
@@ -100,24 +100,37 @@
 
 
 	<!--- 
-	Fetch record of all products from database
+	Fetch record of all verified products from database
 	
 	Output:
-	A query, which gives record of all products present in database
+	A query, which gives record of all verified products present in database
 	--->
-	<cffunction name="getAllProducts" access="remote" returntype="array" returnFormat="JSON">
+	<cffunction name="getVerifiedProducts" access="remote" returntype="array" returnFormat="JSON">
 
 		<cftry>
-		<cfset var cacheData = Super.retrieveCache()/>
+		<cfset var cacheData = Super.retrieveVerifiedCache()/>
 		<cfreturn cacheData/>
 
+    	<cfcatch type="any">
+    		<cfset Super.exceptionLogger(cfcatch)/>
+    		<cflocation url="somethingwentwrong.cfm"/>
+    	</cfcatch>
+    	</cftry>
+	</cffunction>
 
-		<!--- <cfquery name="allProducts">
-			SELECT productCode, productName, productDesc 
-			FROM myproducts;
-    	</cfquery>
 
-    	<cfreturn allProducts/> --->
+
+	<!--- 
+	Fetch record of all unverified products from database
+	
+	Output:
+	A query, which gives record of all unverified products present in database
+	--->
+	<cffunction name="getUnverifiedProducts" access="remote" returntype="array" returnFormat="JSON">
+
+		<cftry>
+		<cfset var cacheData = Super.retrieveUnverifiedCache()/>
+		<cfreturn cacheData/>
 
     	<cfcatch type="any">
     		<cfset Super.exceptionLogger(cfcatch)/>
@@ -172,15 +185,30 @@
 
 		
 		<cfif existence.recordcount EQ 0 AND arrayLen(session.createErrors) EQ 0>
-			<cfquery name="insertNewProduct">
-				INSERT INTO myproducts (productCode, productName, productDesc)
-				VALUES 
-				(
-					<cfqueryparam value = "#Trim(arguments.productCodetoCreate)#" cfsqltype = "cf_sql_varchar">,
-					<cfqueryparam value = "#Trim(arguments.productNametoCreate)#" cfsqltype = "cf_sql_varchar">,
-					<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">
-				);
-			</cfquery>
+			<cfif session.loggedInUser.role EQ 'admin'>
+				<cfquery name="insertNewProduct">
+					INSERT INTO myproducts (productCode, productName, productDesc, verified)
+					VALUES 
+					(
+						<cfqueryparam value = "#Trim(arguments.productCodetoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#Trim(arguments.productNametoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">,
+						'YES'
+					);
+				</cfquery>
+			<cfelse>
+				<cfquery name="insertNewProduct">
+					INSERT INTO myproducts (productCode, productName, productDesc, verified)
+					VALUES 
+					(
+						<cfqueryparam value = "#Trim(arguments.productCodetoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#Trim(arguments.productNametoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">,
+						'NO'
+					);
+				</cfquery>
+
+			</cfif>
 			<cfset Super.syncronizeCache()/>
 		</cfif>
 
@@ -195,5 +223,69 @@
 		</cftry>
 		
   		<cfreturn false />
+	</cffunction>
+
+
+
+	<!--- 
+	Marks the verified status of a prodct to 'YES'
+	
+	Input :
+	productCodetoAccept: A string type argument, which is the product's identification code to mark as accepted
+
+	Output:
+	A boolean, which is the status of acceptance
+	--->
+	<cffunction name="acceptProduct" access="remote" returntype="boolean" returnFormat="JSON">
+
+		<cfargument name="productCodetoAccept" required="true" type="string">
+
+		<cftry>
+		
+		<cfquery name="markAsVerified" result="acceptedProductRecord">
+			UPDATE myproducts
+			SET verified='YES'
+			WHERE productCode=<cfqueryparam value = #arguments.productCodetoAccept# cfsqltype = "cf_sql_varchar">;
+		</cfquery>
+		<cfset Super.syncronizeCache()/>
+
+		<cfreturn true/>
+
+    	<cfcatch type="any">
+    		<cfset Super.exceptionLogger(cfcatch)/>
+    		<cflocation url="somethingwentwrong.cfm"/>
+    	</cfcatch>
+    	</cftry>
+	</cffunction>
+
+
+
+	<!--- 
+	Unverify the product and remove it from database
+	
+	Input :
+	productCodetoReject: A string type argument, which is the product's identification code to mark as rejected
+
+	Output:
+	A boolean, which is the status of acceptance
+	--->
+	<cffunction name="rejectProduct" access="remote" returntype="boolean" returnFormat="JSON">
+
+		<cfargument name="productCodetoReject" required="true" type="string">
+
+		<cftry>
+		
+		<cfquery name="rejectProduct" result="acceptedProductRecord">
+			DELETE FROM myproducts WHERE productCode=<cfqueryparam value = #arguments.productCodetoReject# cfsqltype = "cf_sql_varchar">;
+		</cfquery>
+		<cfset Super.syncronizeCache()/>
+
+		<cfreturn true/>
+
+    	<cfcatch type="any">
+    		<cfset Super.exceptionLogger(cfcatch)/>
+    		<cflocation url="somethingwentwrong.cfm"/>
+    	</cfcatch>
+    	</cftry>
 	</cffunction>
 </cfcomponent>

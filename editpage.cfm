@@ -7,7 +7,7 @@
 	</body>
 
 	<cfelse>
-		<cfmodule template="./customtags/fallback.cfm" heading="LIMITED ACCESS" content="YOU DONT HAVE PERMISSION TO EDIT">
+		<cfmodule template="./customtags/fallback.cfm" heading="LIMITED ACCESS" content="PLEASE LOGIN AS ADMIN TO EDIT INFORMATION">
 
 </cfif>
 </html>

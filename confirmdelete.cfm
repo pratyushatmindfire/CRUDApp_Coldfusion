@@ -7,6 +7,6 @@
 	</body>
 
 	<cfelse>
-		<cfmodule template="./customtags/fallback.cfm" heading="LIMITED ACCESS" content="YOU DONT HAVE PERMISSION TO DELETE">
+		<cfmodule template="./customtags/fallback.cfm" heading="LIMITED ACCESS" content="PLEASE LOGIN AS ADMIN TO DELETE PRODUCTS">
 </cfif>
 </html>

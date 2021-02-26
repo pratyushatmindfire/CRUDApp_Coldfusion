@@ -74,7 +74,7 @@ body
     text-align: center;
 }
 
-.form-submit
+.form-submit, .form-verify
 {
     border-radius: 6px;
     padding: 1% 4% 1.5% 4%;
@@ -83,7 +83,7 @@ body
     border: 2px solid #c5c4c8;
 }
 
-.form-submit:hover
+.form-submit:hover, .form-verify:hover
 {
 	background-color: #a1a6b6;
     color: #f7f3ff;
@@ -91,7 +91,7 @@ body
     transition: 0.3s;
 }
 
-.form-submit:focus
+.form-submit:focus, ..form-verify:focus
 {
 	outline: 0;
 }
@@ -126,7 +126,7 @@ body
 
 }
 
-.logoutbutton, .backbutton, .addbutton, .exportOptionsbutton
+.logoutbutton, .verifybutton, .backbutton, .addbutton, .exportOptionsbutton
 {
 	font-size: 0.8em;
     padding: 1.2% 3% 1.5% 3%;
@@ -170,6 +170,17 @@ body
     transition: 0.3s;
     cursor: pointer;
 }
+
+.verifybutton:hover
+{
+    text-decoration: none;
+    background-color: #591a7f;
+    color: #dcdcdc;
+    border: 2px solid #dfdfdf;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
 #actionheader
 {
     font-size: medium;
