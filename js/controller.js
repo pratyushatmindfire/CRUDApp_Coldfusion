@@ -478,20 +478,30 @@ function logoutUser()
 
 }
 
-function exportData(mode)
+function exportData()
 {
-  console.log("Exporting to", mode);
 
-  if(mode==="PDF")
-  {
-    window.open('/CRUDApp/pdfexport.cfm');
-  }
+  let mode=$('#exportMode').val();
+  let sortSubject=$('#sortBy').val();
+  let orderSubject=$('#orderBy').val();
+  let minPrice=parseInt($('#minAmount').val().slice(1));
+  let maxPrice=parseInt($('#maxAmount').val().slice(1));
 
-  else if(mode="Excel")
-  {
-    window.open('/CRUDApp/excelexport.cfm');
-  }
 
-  $('select[name="exportOptions"]')[0].value="none";
+  console.log(mode, sortSubject, orderSubject, minPrice, maxPrice);
+  window.open("/CRUDApp/exportExecutor.cfm?exportMode="+mode+"&exportsortSubject="+sortSubject+"&exportorderSubject="+orderSubject+"&exportminPrice="+minPrice+"&exportmaxPrice="+maxPrice);
+
+
+  // if(mode==="PDF")
+  // {
+  //   window.open('/CRUDApp/pdfexport.cfm');
+  // }
+
+  // else if(mode="Excel")
+  // {
+  //   window.open('/CRUDApp/excelexport.cfm');
+  // }
+
+  // $('select[name="exportOptions"]')[0].value="none";
 
 }

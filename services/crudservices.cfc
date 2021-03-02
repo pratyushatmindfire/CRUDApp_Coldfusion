@@ -1,4 +1,61 @@
 <cfcomponent output="false" displayname="crudServiceComponent" extends="loggerService">
+
+	<!--- 
+	Fetch record of all filtered verified products from database
+
+	Input:
+	exportsortSubject: A string type argument, which is the column based on which the data is to be sorted
+
+	exportorderSubject: A string type argument, which specifies whether the sort has to be ascending or descending
+
+	exportminPrice: A integer type argument, which specifies the minimum price of filter criteria
+	
+	exportmaxPrice: A integer type argument, which specifies the maximum price of filter criteria
+
+	Output:
+	A query, which gives record of all filtered verified products present in database
+	--->
+	<cffunction name="getFilteredData" access="remote" returntype="query" returnFormat="JSON">
+
+		<cfargument name="exportsortSubject" required="true" type="string">
+		<cfargument name="exportorderSubject" required="true" type="string">
+		<cfargument name="exportminPrice" required="true" type="numeric">
+		<cfargument name="exportmaxPrice" required="true" type="numeric">
+
+		<cfdump var="#arguments.exportminPrice#"/>
+		<cfdump var="#arguments.exportmaxPrice#"/>
+
+		<cfset var local.sortCriteria = arguments.exportsortSubject/>
+		<cfif local.sortCriteria NEQ 'price' AND local.sortCriteria NEQ 'productName'>
+			<cfset local.sortCriteria = 'productName'/>
+		</cfif>
+
+		<cfset var local.orderCriteria = arguments.exportorderSubject/>
+		<cfif local.orderCriteria NEQ 'asc' AND local.orderCriteria NEQ 'desc'>
+			<cfset local.orderCriteria = 'asc'/>
+		</cfif>
+
+		<cfset var local.minPrice = arguments.exportminPrice/>
+		<cfset var local.maxPrice = arguments.exportmaxPrice/>
+
+		<cftry>
+		<cfquery name="allVerifiedProducts">
+			SELECT productCode, productName, productDesc, price FROM myproducts WHERE verified='YES' AND price BETWEEN #local.minPrice# AND #local.maxPrice# ORDER BY #local.sortCriteria# #local.orderCriteria#;
+    	</cfquery>
+
+    	<cfcatch type="any">
+    		<cfset Super.exceptionLogger(cfcatch)/>
+    		<cfdump var="#cfcatch#"/>
+    		<!--- <cflocation url="somethingwentwrong.cfm"/> --->
+    	</cfcatch>
+    	</cftry>
+
+  		<cfreturn allVerifiedProducts/>
+	</cffunction>
+
+
+
+
 	<!--- 
 	Delete a product from database based on its product code
 
@@ -108,6 +165,7 @@
 	<cffunction name="getVerifiedProducts" access="remote" returntype="array" returnFormat="JSON">
 
 		<cftry>
+		<cfset Super.syncronizeCache()/>
 		<cfset var cacheData = Super.retrieveVerifiedCache()/>
 		<cfreturn cacheData/>
 
@@ -129,6 +187,7 @@
 	<cffunction name="getUnverifiedProducts" access="remote" returntype="array" returnFormat="JSON">
 
 		<cftry>
+		<cfset Super.syncronizeCache()/>
 		<cfset var cacheData = Super.retrieveUnverifiedCache()/>
 		<cfreturn cacheData/>
 

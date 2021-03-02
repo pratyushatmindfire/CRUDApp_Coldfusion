@@ -91,7 +91,7 @@ body
     transition: 0.3s;
 }
 
-.form-submit:focus, ..form-verify:focus
+.form-submit:focus, .form-verify:focus, .exportOptionsbutton:focus
 {
 	outline: 0;
 }
@@ -140,10 +140,20 @@ body
     margin-right: 0.3em;
 }
 
-.backbutton:hover, .exportOptionsbutton:hover
+.backbutton:hover
 {
 	text-decoration: none;
 	background-color: #a1a6b6;
+    color: #f7f3ff;
+    border: 2px solid #dfdfdf;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.exportOptionsbutton:hover
+{
+    text-decoration: none;
+    background-color: #af8673;
     color: #f7f3ff;
     border: 2px solid #dfdfdf;
     transition: 0.3s;
@@ -174,7 +184,7 @@ body
 .verifybutton:hover
 {
     text-decoration: none;
-    background-color: #591a7f;
+    background-color: #1f8c53;
     color: #dcdcdc;
     border: 2px solid #dfdfdf;
     transition: 0.3s;

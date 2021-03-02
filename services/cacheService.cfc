@@ -58,13 +58,13 @@
 			<cfset cachePut("verifiedProductsCacheMemory", arrayNew(1))/>
 			<cfset cachePut("unverifiedProductsCacheMemory", arrayNew(1))/>
 			<cfquery name="verifiedProductsQuery" result="productsResult">
-				SELECT productCode, productName, productDesc 
+				SELECT productCode, productName, productDesc, price
 				FROM myproducts
 				WHERE verified='YES';
 			</cfquery>
 
 			<cfquery name="unverifiedProductsQuery" result="productsResult">
-				SELECT productCode, productName, productDesc 
+				SELECT productCode, productName, productDesc, price
 				FROM myproducts
 				WHERE verified='NO';
 			</cfquery>
@@ -74,7 +74,7 @@
 				for (row in verifiedProductsQuery) 
 				{
     				arrayAppend(verifiedProductsCacheObject, 
-    					[row.productCode, row.productName, row.productDesc]
+    					[row.productCode, row.productName, row.productDesc, row.price]
     				);
 				}
 
@@ -82,7 +82,7 @@
 				for (row in unverifiedProductsQuery) 
 				{
     				arrayAppend(unverifiedProductsCacheObject, 
-    					[row.productCode, row.productName, row.productDesc]
+    					[row.productCode, row.productName, row.productDesc, row.price]
     				);
 				}
 			</cfscript>
