@@ -36,6 +36,7 @@ body
 	padding: 1% 2% 2% 2%;
 	text-align: center;
 	border-radius: 5px;
+    margin-top:4%;
 }
 
 .form-input
@@ -138,6 +139,33 @@ body
     height: fit-content;
     margin-top: 0.3em;
     margin-right: 0.3em;
+}
+
+.exportButton
+{
+    padding: 0.1em 0.4em 0.2em 0.4em;
+    font-size: larger;
+    border: 0;
+    border-radius: 0.2em;
+    background-color: #dedbe0;
+    text-align-last: center;
+    color: #9a9a9a;
+    font-weight: 500;
+    cursor: pointer;
+    width: 16%;
+    margin-top: 6%;
+}
+
+.exportButton:hover
+{
+    color: #dedbe0;
+    transition: 0.5s;
+    background-color: #9a9a9a;
+}
+
+.exportButton:focus
+{
+    outline: 0;
 }
 
 .backbutton:hover

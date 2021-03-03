@@ -484,8 +484,8 @@ function exportData()
   let mode=$('#exportMode').val();
   let sortSubject=$('#sortBy').val();
   let orderSubject=$('#orderBy').val();
-  let minPrice=parseInt($('#minAmount').val().slice(1));
-  let maxPrice=parseInt($('#maxAmount').val().slice(1));
+  let minPrice=parseInt($('#slider-range span')[0].innerText.slice(1));
+  let maxPrice=parseInt($('#slider-range span')[1].innerText.slice(1));
 
 
   console.log(mode, sortSubject, orderSubject, minPrice, maxPrice);

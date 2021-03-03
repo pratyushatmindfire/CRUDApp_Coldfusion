@@ -9,52 +9,116 @@
       max: 100,
       values: [ 0, 100 ],
       slide: function( event, ui ) {
-        $( "#minAmount" ).val( "$" + ui.values[ 0 ]);
-        $( "#maxAmount" ).val( "$" + ui.values[ 1 ] );
+
+        $('#slider-range span')[0].innerText="$" + ui.values[ 0 ];
+        $('#slider-range span')[1].innerText="$" + ui.values[ 1 ];
       }
     });
 
-    $( "#minAmount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ));
-    $( "#maxAmount" ).val( "$" + $( "#slider-range" ).slider( "values", 1 ));
+    $('#slider-range span')[0].innerText="$" + $( "#slider-range" ).slider( "values", 0 );
+    $('#slider-range span')[1].innerText="$" + $( "#slider-range" ).slider( "values", 1 );
   } );
 </script>
 
+<style>
+
+  select:focus
+  {
+    outline: 0;
+  }
+
+  select
+  {
+    padding: 0.1em;
+    font-size: larger;
+    border: 0;
+    border-radius: 0.6em;
+    background-color: #dedbe0;
+    text-align-last: center;
+    cursor: pointer;
+    color: #9a9a9a;
+    font-weight: 500;
+  }
+
+  .eachOption-Line
+  {
+    margin-bottom: 1.2em;
+  }
+
+  #slider-range
+  {
+    width: 35%;
+    display: inline-flex;
+    margin-left: 1%;
+  }
+
+  #slider-range span
+  {
+    height: auto;
+    font-size: 0.9em;
+    width: auto;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    color: #9a9a9a;
+    cursor: pointer;
+  }
+
+  #slider-range span:focus
+  {
+    outline:0;
+    background-color: #f6f6f6;
+    border: 0;
+  }
+
+  label 
+  {
+    font-size: 1.1em;
+    font-weight: 500;
+    font-family: inherit;
+    color: #878787;
+    margin-right: 1%;
+  }
+
+</style>
+
 <cfoutput>
-	<div class="formcontainer" style="height:50%">
+	<div class="formcontainer" style="height:40%">
 
 		<h1 class="heading">Export Tool</h1>
 
 		<form class="form-content">
 			<div>
-				<label for="exportMode">Export as</label>
-				<select id="exportMode" name="exportOptions">
+        <div class="eachOption-Line">
+				  <label for="exportMode">Export as</label>
+				  <select id="exportMode" name="exportOptions">
   					<option value="PDF" selected>PDF</option>
   					<option value="Excel">Excel Sheet</option>
-				</select>
+				  </select>
+        </div>
 
-				<label for="sortBy">Sort By</label>
-				<select id="sortBy" name="sortSubject">
+        <div class="eachOption-Line">
+				  <label for="sortBy">Sort By</label>
+				  <select id="sortBy" name="sortSubject">
   					<option value="productName" selected>Name</option>
   					<option value="price">Price</option>
-				</select>
+				  </select>
 
-				<select id="orderBy" name="orderSubject">
-  					<option value="asc" selected>Asc</option>
-  					<option value="desc">Desc</option>
-				</select>
+          <select id="orderBy" name="orderSubject">
+            <option value="asc" selected>Asc</option>
+            <option value="desc">Desc</option>
+          </select>
+        </div>
 
 
-				<div id="priceFilter">
-				<p>
-  					<label for="amount">Price range:</label>
-  					<input type="text" id="minAmount" readonly style="border:0; font-weight:bold;">
-  					<input type="text" id="maxAmount" readonly style="border:0; font-weight:bold;">
-				</p>
-				<div id="slider-range"></div>
+				<div id="priceFilter" class="eachOption-Line">
+				  <label for="amount">Price Range</label>
+
+				  <div id="slider-range">
+          </div>
 				</div>
 			</div>
 
-			<button onclick="event.preventDefault(); exportData();">Export</button>
+			<input class="exportButton" readonly onclick="exportData();" value="Export">
 		</form>
 	</div>
 </cfoutput>
