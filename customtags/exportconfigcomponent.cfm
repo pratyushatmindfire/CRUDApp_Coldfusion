@@ -78,11 +78,10 @@
     color: #878787;
     margin-right: 1%;
   }
-
 </style>
 
 <cfoutput>
-	<div class="formcontainer" style="height:40%">
+	<div class="formcontainer" style="height:fit-content">
 
 		<h1 class="heading">Export Tool</h1>
 
@@ -118,7 +117,12 @@
 				</div>
 			</div>
 
-			<input class="exportButton" readonly onclick="exportData();" value="Export">
+      <div class="formfield-spacious exportsubmitbutton">
+        <input class="form-submit" type="submit" readonly onclick="event.preventDefault(); previewExportData();" value="Preview">
+        <input class="form-submit" type="submit" readonly onclick="exportData();" value="Export">
+        <input class="form-submit" type="submit" name="resetfilterbutton" value="Reset Filter" onclick="event.preventDefault(); resetExportFilter();">
+        <input class="form-submit" type="submit" name="backbutton" value="Back to Dashboard" onclick="event.preventDefault(); window.location='/CRUDApp/dashboard.cfm';">
+      </div>
 		</form>
 	</div>
 </cfoutput>

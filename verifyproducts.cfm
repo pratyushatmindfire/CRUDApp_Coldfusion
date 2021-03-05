@@ -9,9 +9,10 @@
 	<cfif structKeyExists(session, 'loggedInUser')>
 		<cfif session.loggedInUser.role EQ 'admin'>
 			<body onload="seedVerifyPanel();">
-			<div id="verifyPanel">
+				<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Verify Products">
+				<div id="verifyPanel">
 				
-			</div>
+				</div>
 			</body>
 
 		<cfelse>

@@ -1,5 +1,5 @@
 <cfmodule template="./customtags/htmlheader.cfm" pagetitle="Dashboard">
-<cfdump var =#session#/>
+<!--- <cfdump var =#session#/> --->
 <body onload="seedDashboard();">
 
 	<cfset StructDelete(cookie, 'editMemory.editId', true)/>
@@ -14,7 +14,7 @@
 	<!-- Show dashboard if user has logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
 
-		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
+		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Dashboard">
 
 		<h1 id="actionheader">List of Products</h1>
 		<div class="row" id="dashboardcontent">

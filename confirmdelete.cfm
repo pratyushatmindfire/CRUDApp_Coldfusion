@@ -2,7 +2,7 @@
 <cfif session.loggedInUser.role EQ 'admin'>
 	<body onload="loadDeleteComponentData(<cfoutput>'#url.codetoDelete#'</cfoutput>);">
 	<!-- Show confirm delete form if user is logged in -->
-		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
+		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Confirm Delete">
 		<cfmodule template="./customtags/deletecomponent.cfm">
 	</body>
 

@@ -9,7 +9,7 @@
 			</div>
 			
 			<div class="formfield submitbutton">
-				<input class="form-submit" type="submit" name="backbutton" value="Go to Dashboard">
+				<input class="form-submit" type="submit" name="backbutton" value="Go to Dashboard" onclick="event.preventDefault(); window.location='/CRUDApp/dashboard.cfm';">
 			</div>
 		</form>
 	</div>

@@ -8,7 +8,7 @@
 
 	<!-- Show create form is user is logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
+		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Create Page">
 		<h1 id="actionheader">Create Page</h1>
 
 		<!--- Display create component --->

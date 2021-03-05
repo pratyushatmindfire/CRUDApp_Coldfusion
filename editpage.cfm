@@ -2,7 +2,7 @@
 <cfif session.loggedInUser.role EQ 'admin'>
 	<body onload="loadEditComponentData(<cfoutput>'#url.codetoEdit#'</cfoutput>);">
 	<!-- Show edit form is user is logged in -->
-		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
+		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Edit Page">
 		<cfmodule template="./customtags/editcomponent.cfm">
 	</body>
 

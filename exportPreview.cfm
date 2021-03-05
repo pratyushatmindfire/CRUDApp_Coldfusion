@@ -2,11 +2,10 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Export Data</title>
+<title>Export Preview</title>
 </head>
 
 <body>
-
 	<cfif NOT structKeyExists(session, 'loggedInUser')>
 		<cflocation url="loginpage.cfm">
 	</cfif>
@@ -43,7 +42,7 @@
 
 
 	<cfoutput>
-	<cfset myExportservices.exportData(url.exportMode, url.exportsortSubject, url.exportorderSubject, url.exportminPrice, url.exportmaxPrice)/>
+	<cfset myExportservices.previewExport(url.exportMode, url.exportsortSubject, url.exportorderSubject, url.exportminPrice, url.exportmaxPrice)/>
 	</cfoutput>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 	<!-- Show missing template compoennt if user is logged in and has requested something that wasnt found -->
 	<cfif structKeyExists(session, 'loggedInUser')>
-		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName#>
+		<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Page not found">
 	</cfif>
 
 	<cfmodule template="./customtags/fallback.cfm" heading="OOPS" content="THIS PAGE DOESN'T EXIST">

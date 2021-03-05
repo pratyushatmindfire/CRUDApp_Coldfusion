@@ -1,5 +1,3 @@
-var userData = '';
-
 function deleteItem(codetoDelete){
 	console.log("Code to delete", codetoDelete);
   $.ajax({
@@ -187,6 +185,8 @@ function doRejectProduct(code)
       });
 }
 
+
+
 function generateVerificationItem(code, name, desc)
 {
   return '<div id="'+code+'" class="formcontainer" style="height:50%"><h1 class="heading" name="view_productcode">'
@@ -195,9 +195,9 @@ function generateVerificationItem(code, name, desc)
   +name+
   '</h3></div><div class="formfield productdescription"><h3 class="view-header" name="view_productdesc" style="color: rgb(129, 122, 152)">'
   +desc+
-  '</h3></div> <div class="formfield submitbutton"><input  type="button" class="form-verify" name="verifybutton" value="Accept" onclick="event.preventDefault(); doVerifyProduct(\''
+  '</h3></div> <div class="formfield submitbutton"><input style="margin-right: 0.5vw;" type="button" class="form-verify" name="verifybutton" value="Accept" onclick="event.preventDefault(); doVerifyProduct(\''
   +btoa(code)+
-  '\');"><input type="button" class="form-verify" name="verifybutton" value="Reject" onclick="event.preventDefault(); doRejectProduct(\''
+  '\');"><input style="margin-left: 0.5vw;" type="button" class="form-verify" name="verifybutton" value="Reject" onclick="event.preventDefault(); doRejectProduct(\''
   +btoa(code)+
   '\')"></div></form></div>';
 }
@@ -478,6 +478,16 @@ function logoutUser()
 
 }
 
+function previewExportData()
+{
+  let mode=$('#exportMode').val();
+  let sortSubject=$('#sortBy').val();
+  let orderSubject=$('#orderBy').val();
+  let minPrice=parseInt($('#slider-range span')[0].innerText.slice(1));
+  let maxPrice=parseInt($('#slider-range span')[1].innerText.slice(1));
+  window.open("/CRUDApp/exportPreview.cfm?exportMode="+mode+"&exportsortSubject="+sortSubject+"&exportorderSubject="+orderSubject+"&exportminPrice="+minPrice+"&exportmaxPrice="+maxPrice);
+}
+
 function exportData()
 {
 
@@ -490,18 +500,35 @@ function exportData()
 
   console.log(mode, sortSubject, orderSubject, minPrice, maxPrice);
   window.open("/CRUDApp/exportExecutor.cfm?exportMode="+mode+"&exportsortSubject="+sortSubject+"&exportorderSubject="+orderSubject+"&exportminPrice="+minPrice+"&exportmaxPrice="+maxPrice);
+}
 
+function resetExportFilter()
+{
+  var animatorRef=setInterval(()=>{
+    let [currentMin, currentMax]=$("#slider-range").slider("values");
 
-  // if(mode==="PDF")
-  // {
-  //   window.open('/CRUDApp/pdfexport.cfm');
-  // }
+    if(currentMin>0)
+    {
+      currentMin=currentMin-1;
+    }
 
-  // else if(mode="Excel")
-  // {
-  //   window.open('/CRUDApp/excelexport.cfm');
-  // }
+    if(currentMax<100)
+    {
+      currentMax=currentMax+1;
+    }
 
-  // $('select[name="exportOptions"]')[0].value="none";
+    $("#slider-range").slider({values:[currentMin, currentMax]})
+    $('#slider-range span')[0].innerText="$"+(currentMin);
+    $('#slider-range span')[1].innerText="$"+(currentMax);
 
+    if(currentMin===0 && currentMax===100)
+    {
+      $('#exportMode').val('PDF');
+      $('#sortBy').val('productName');
+      $('#orderBy').val('asc');
+      clearInterval(animatorRef);
+    }
+
+    console.log('Running');
+  }, 2);
 }

@@ -10,6 +10,11 @@
 
 	
 <body>
+	<!--- <embed src="exportDataPDF_04_43 PM.pdf" type="application/pdf" width="100%" height="600px" /> --->
+
+	<!--- <cfdocument filename="assets\filespreview\preview.pdf" overwrite="yes" format="PDF" pagetype="A4" orientation="portrait">
+
+	</cfdocument> --->
 	<!-- User has logged in -->
 	<cfif structKeyExists(session, 'loggedInUser')>
 		<cfif structkeyexists(cookie, 'editMemory.editId')>

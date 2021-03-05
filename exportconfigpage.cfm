@@ -4,6 +4,7 @@
 
 <cfmodule template="./customtags/htmlheader.cfm" pagetitle="Configure Export">
 <body>
+	<cfmodule template="./customtags/navbarheader.cfm" userName=#session.loggedInUser.userName# navbarFor="Configure Export">
 	<cfmodule template="./customtags/exportconfigcomponent.cfm">
 </body>
 </html>

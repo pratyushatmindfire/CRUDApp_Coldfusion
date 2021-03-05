@@ -62,6 +62,12 @@ body
     margin: 3% 0% 2% 25%;
 }
 
+.formfield-spacious
+{
+    width: 50%;
+    margin: 8% 0% 2% 25%;
+}
+
 .formfield-header
 {
 	font-size: medium;
@@ -92,7 +98,7 @@ body
     transition: 0.3s;
 }
 
-.form-submit:focus, .form-verify:focus, .exportOptionsbutton:focus
+.form-submit:focus, .form-verify:focus, .exportOptionsbutton:focus, .nav-backtodashboard:focus
 {
 	outline: 0;
 }
@@ -127,7 +133,7 @@ body
 
 }
 
-.logoutbutton, .verifybutton, .backbutton, .addbutton, .exportOptionsbutton
+.logoutbutton, .verifybutton, .backbutton, .addbutton, .exportOptionsbutton, .nav-backtodashboard
 {
 	font-size: 0.8em;
     padding: 1.2% 3% 1.5% 3%;
@@ -183,6 +189,16 @@ body
     text-decoration: none;
     background-color: #af8673;
     color: #f7f3ff;
+    border: 2px solid #dfdfdf;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.nav-backtodashboard:hover
+{
+    text-decoration: none;
+    background-color: #806fac;
+    color: #d2ccdc;
     border: 2px solid #dfdfdf;
     transition: 0.3s;
     cursor: pointer;
