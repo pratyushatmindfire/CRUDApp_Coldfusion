@@ -506,13 +506,15 @@ function resetExportFilter()
 {
   var animatorRef=setInterval(()=>{
     let [currentMin, currentMax]=$("#slider-range").slider("values");
+    let originalMin = $("#slider-range").slider("option", "min");
+    let originalMax = $("#slider-range").slider("option", "max");
 
-    if(currentMin>0)
+    if(currentMin>originalMin)
     {
       currentMin=currentMin-1;
     }
 
-    if(currentMax<100)
+    if(currentMax<originalMax)
     {
       currentMax=currentMax+1;
     }
@@ -521,7 +523,7 @@ function resetExportFilter()
     $('#slider-range span')[0].innerText="$"+(currentMin);
     $('#slider-range span')[1].innerText="$"+(currentMax);
 
-    if(currentMin===0 && currentMax===100)
+    if(currentMin===originalMin && currentMax===originalMax)
     {
       $('#exportMode').val('PDF');
       $('#sortBy').val('productName');
@@ -530,5 +532,5 @@ function resetExportFilter()
     }
 
     console.log('Running');
-  }, 2);
+  }, 40);
 }

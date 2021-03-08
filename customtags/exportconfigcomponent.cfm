@@ -1,3 +1,10 @@
+<cfquery name='minPriceSelector' result='minPrice'>
+  SELECT FLOOR(MIN(price)) as MinimumCost FROM myproducts LIMIT 1;
+</cfquery>
+
+<cfquery name='maxPriceSelector' result='maxPrice'>
+  SELECT CEILING(MAX(price)) as MaximumCost FROM myproducts LIMIT 1;
+</cfquery>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -5,9 +12,9 @@
   $( function() {
     $("#slider-range").slider({
       range: true,
-      min: 0,
-      max: 100,
-      values: [ 0, 100 ],
+      min: <cfoutput query='minPriceSelector'>#minPriceSelector.MinimumCost#</cfoutput>,
+      max: <cfoutput query='maxPriceSelector'>#maxPriceSelector.MaximumCost#</cfoutput>,
+      values: [ <cfoutput query='minPriceSelector'>#minPriceSelector.MinimumCost#</cfoutput>, <cfoutput query='maxPriceSelector'>#maxPriceSelector.MaximumCost#</cfoutput> ],
       slide: function( event, ui ) {
 
         $('#slider-range span')[0].innerText="$" + ui.values[ 0 ];

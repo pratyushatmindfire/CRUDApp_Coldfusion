@@ -27,52 +27,11 @@
 		<cfelse>
 			<cfheader name="Content-Disposition" value="attachment; filename=exportDataPDF_#TimeFormat(Now())#.pdf">
 			<cfcontent type="application/pdf">
-			<cfdocument format="PDF">
-				<style>
-					td
-					{
-						text-align: center; 
-						font-family: sans-serif;
-					}
 
-					tr
-					{
-						background: white; 
-						color: black;
-					}
+			<!--- Reusing the code for preview --->
+			<cfset previewExport(arguments.exportMode, arguments.exportsortSubject, arguments.exportorderSubject, arguments.exportminPrice, arguments.exportmaxPrice) />
 
-					.container
-					{
-						text-align: center
-					}
 
-					h1
-					{
-						text-align: center; 
-						font-family: sans-serif
-					}
-				</style>
-				<h1>Exported Data</h1>
-				<div class="container">
-				<table border="1">
-					<tr>
-						<td>Product ID</td>
-						<td>Product Name</td>
-						<td>Product Description</td>
-						<td>Price</td>
-					</tr>
-
-					<cfoutput query="exportProducts">
-						<tr>
-							<td>#exportProducts.PRODUCTCODE#</td>
-							<td>#exportProducts.PRODUCTNAME#</td>
-							<td>#exportProducts.PRODUCTDESC#</td>
-							<td>#exportProducts.PRICE#</td>
-						</tr>
-					</cfoutput>
-				</table>
-				</div>
-			</cfdocument>
 
 		</cfif>
 
