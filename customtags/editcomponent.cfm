@@ -14,6 +14,11 @@
 				<input name="edit_productdesc" spellcheck="false" required autocomplete="off" class="form-input" type="text">
 			</div>
 
+			<div class="formfield productprice">
+				<h3 class="formfield-header">Product Price</h3>
+				<input name="edit_productprice" spellcheck="false" required autocomplete="off" class="form-input" type="number" min="1" max="1000">
+			</div>
+
 			<div class="formfield submitbutton">
 				<input class="form-submit" type="submit" id='<cfoutput>#url.codetoEdit#</cfoutput>' value="Update" onclick="event.preventDefault(); editItem(this.id)";>
 
@@ -21,4 +26,14 @@
 			</div>
 		</form>
 	</div>
+
+	<!--- Loop over and display create error messages --->
+	<cfif structKeyexists(session, 'editErrors') AND NOT ArrayIsEmpty(session.editErrors)>
+			<cfoutput>
+				<cfloop array="#session.editErrors#" item="message">
+					<p class="validatormessage">#message#</p>
+				</cfloop>
+			</cfoutput>
+			<cfset structDelete(session, 'editErrors')/>
+	</cfif>
 </cfoutput>

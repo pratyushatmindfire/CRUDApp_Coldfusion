@@ -20,8 +20,13 @@
 				<input spellcheck="false" required autocomplete="off" class="form-input" type="text" name="new_productdesc">
 			</div>
 
+			<div class="formfield productprice">
+				<h3 class="formfield-header">Product Price</h3>
+				<input spellcheck="false" required autocomplete="off" class="form-input" type="number" name="new_productprice" min="1" max="1000">
+			</div>
+
 			<div class="formfield submitbutton">
-				<input class="form-submit" type="button" name="loginButton" value="Create" onclick="event.preventDefault(); createItem();">
+				<input class="form-submit" type="button" value="Create" onclick="event.preventDefault(); createItem();">
 
 				<input class="form-submit" type="button" value="Back to Dashboard" onclick="event.preventDefault(); window.location='/CRUDApp/dashboard.cfm';">
 			</div>	 

@@ -27,6 +27,7 @@ function editItem(codetoEdit)
     console.log("Code to edit", codetoEdit);
     var new_productname= $('input[name="edit_productname"]')[0].value;
     var new_productdesc=$('input[name="edit_productdesc"]')[0].value;
+    var new_productprice=$('input[name="edit_productprice"]')[0].value;
 
     console.log(new_productname, new_productdesc);
 
@@ -34,7 +35,7 @@ function editItem(codetoEdit)
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "editItembyCode", productCodetoEdit: (atob(codetoEdit)), newproductname: (new_productname), newproductdesc: (new_productdesc) },
+    data: {method: "editItembyCode", productCodetoEdit: (atob(codetoEdit)), newproductname: (new_productname), newproductdesc: (new_productdesc), newproductprice: (new_productprice) },
     success: function (editStatus){
 
       if(editStatus==="true")
@@ -44,11 +45,11 @@ function editItem(codetoEdit)
 
       else
       {
-        window.location="/CRUDApp/somethingwentwrong.cfm";
+        window.location.reload();
       }
       },
     error: function (xhr, textStatus, errorThrown){
-      window.location="/CRUDApp/somethingwentwrong.cfm"; //This will alert you of any errors.
+      window.location.reload(); //This will alert you of any errors.
       }
       });
 }
@@ -58,6 +59,8 @@ function createItem()
     var new_productcode=$('input[name="new_productcode"]')[0].value;
     var new_productname=$('input[name="new_productname"]')[0].value;
     var new_productdesc=$('input[name="new_productdesc"]')[0].value;
+    var new_productprice=$('input[name="new_productprice"]')[0].value;
+
 
     console.log(new_productcode);
     console.log(new_productname);
@@ -67,7 +70,7 @@ function createItem()
     url: "./services/crudservices.cfc", 
     type: "post",
     cache: false,
-    data: {method: "createNewItem", productCodetoCreate: (new_productcode), productNametoCreate: (new_productname), productDesctoCreate: (new_productdesc) },
+    data: {method: "createNewItem", productCodetoCreate: (new_productcode), productNametoCreate: (new_productname), productDesctoCreate: (new_productdesc), productPricetoCreate:(new_productprice) },
     success: function (createStatus){
 
       if(createStatus==="true")
@@ -330,6 +333,7 @@ function loadViewComponentData(code)
           $('h1[name="view_productcode"]')[0].innerText="Viewing Product "+response[0];
           $('h3[name="view_productname"]')[0].innerText=response[1];
           $('h3[name="view_productdesc"]')[0].innerText=response[2];
+          $('h3[name="view_productprice"]')[0].innerText='$'+response[3];
         } 
       },
     error: function (xhr, textStatus, errorThrown){
@@ -367,6 +371,7 @@ function loadEditComponentData(code)
           $('h1[name="edit_productcode"]')[0].innerText="Editing Product "+response[0];
           $('input[name="edit_productname"]')[0].value=response[1];
           $('input[name="edit_productdesc"]')[0].value=response[2];
+          $('input[name="edit_productprice"]')[0].value=response[3];
         } 
       },
     error: function (xhr, textStatus, errorThrown){

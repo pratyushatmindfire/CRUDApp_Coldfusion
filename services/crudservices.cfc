@@ -1,4 +1,4 @@
-<cfcomponent output="false" displayname="crudServiceComponent" extends="loggerService">
+<cfcomponent output="true" displayname="crudServiceComponent" extends="loggerService">
 
 	<!--- 
 	Fetch record of all filtered verified products from database
@@ -102,27 +102,56 @@
 		<cfargument name="productCodetoEdit" required="true" type="string">
 		<cfargument name="newproductname" required="true" type="string">
 		<cfargument name="newproductdesc" required="true" type="string">
+		<cfargument name="newproductprice" required="true" type="string">
 
 
 		<cftry>
 		<cfif session.loggedInUser.role EQ 'admin'>
-		<cfquery name="editProduct">
-				UPDATE myproducts
-				SET productName = <cfqueryparam value = "#arguments.newproductname#" cfsqltype = "cf_sql_varchar">, 
-				productDesc = <cfqueryparam value = "#arguments.newproductdesc#" cfsqltype = "cf_sql_varchar">
-				WHERE productCode = <cfqueryparam value = "#arguments.productCodetoEdit#" cfsqltype = "cf_sql_varchar">;
-		</cfquery>
 
-		<cfset Super.syncronizeCache()/>
+			<cfset session.editErrors=ArrayNew(1)/>
+
+			<cfset local.CodetoEdit = Trim(arguments.productCodetoEdit)/>
+			<cfset local.NametoEdit = Trim(arguments.newproductname)/>
+			<cfset local.DesctoEdit = Trim(arguments.newproductdesc)/>
+			<cfset local.PricetoEdit = val(Trim(arguments.newproductprice))/>
+
+			<cfif local.CodetoEdit EQ '' OR local.NametoEdit EQ '' OR local.DesctoEdit EQ '' OR local.PricetoEdit EQ '0'>
+				<cfset arrayAppend(session.editErrors,'Make sure to fill up all the fields') />
+			</cfif>
+
+			<cfif
+			NOT isValid("regex", local.NametoEdit, "^[a-zA-Z0-9_ ]+$") 
+			OR 
+			NOT isValid("regex", local.DesctoEdit, "^[a-zA-Z0-9_ ]+$")
+			OR
+			NOT isValid("regex", local.PricetoEdit, "^[1-9]\d*(\.\d+)?$")>
+				<cfset arrayAppend(session.editErrors,'Make sure to fill up valid content') />
+			</cfif>
+
+			<cfif arrayLen(session.editErrors) EQ 0>
+			<cfquery name="editProduct">
+				UPDATE myproducts
+				SET productName = <cfqueryparam value = "#local.NametoEdit#" cfsqltype = "cf_sql_varchar">, 
+				productDesc = <cfqueryparam value = "#local.DesctoEdit#" cfsqltype = "cf_sql_varchar">,
+				price = <cfqueryparam value = "#local.PricetoEdit#" scale="2" cfsqltype = "cf_sql_decimal">
+				WHERE productCode = <cfqueryparam value = "#local.CodetoEdit#" cfsqltype = "cf_sql_varchar">;
+			</cfquery>
+
+			<cfset Super.syncronizeCache()/>
+
+			<cfif ArrayLen(session.editErrors) EQ 0>
+				<cfreturn true/>
+			</cfif>
+			</cfif>
 		</cfif>
 
 		<cfcatch type="any">
 			<cfset Super.exceptionLogger(cfcatch)/>
 			<cfreturn false/>
 		</cfcatch>
-		</cftry>
 
-		<cfreturn true/>
+		</cftry>
+		<cfreturn false />
 	</cffunction>
 
 	<!--- 
@@ -214,31 +243,40 @@
 		<cfargument name="productCodetoCreate" required="true" type="string">
 		<cfargument name="productNametoCreate" required="true" type="string">
 		<cfargument name="productDesctoCreate" required="true" type="string">
+		<cfargument name="productPricetoCreate" required="true" type="string">
 
 		<cftry>
 		<cfset session.createErrors=ArrayNew(1)/>
 
-		<cfif arguments.productCodetoCreate.trim() EQ '' OR arguments.productNametoCreate.trim() EQ '' OR arguments.productDesctoCreate.trim() EQ ''>
+
+		<cfset local.newCodetoCreate = Trim(arguments.productCodetoCreate)/>
+		<cfset local.newNametoCreate = Trim(arguments.productNametoCreate)/>
+		<cfset local.newDesctoCreate = Trim(arguments.productDesctoCreate)/>
+		<cfset local.newPricetoCreate = val(Trim(arguments.productPricetoCreate))/>
+
+		<cfif local.newCodetoCreate EQ '' OR local.newNametoCreate EQ '' OR local.newDesctoCreate EQ '' OR local.newPricetoCreate EQ '0'>
 			<cfset arrayAppend(session.createErrors,'Make sure to fill up all the fields') />
 		</cfif>
 
 		<cfif 
-		NOT isValid("regex", arguments.productCodetoCreate.trim(), "^[a-zA-Z0-9_]+$") 
+		NOT isValid("regex", local.newCodetoCreate, "^[a-zA-Z0-9_]+$") 
 		OR 
-		NOT isValid("regex", arguments.productNametoCreate.trim(), "^[a-zA-Z0-9_ ]+$") 
+		NOT isValid("regex", local.newNametoCreate, "^[a-zA-Z0-9_ ]+$") 
 		OR 
-		NOT isValid("regex", arguments.productDesctoCreate.trim(), "^[a-zA-Z0-9_ ]+$")>
-			<cfset arrayAppend(session.createErrors,'Make sure to fill up valid content before inserting') />
+		NOT isValid("regex", local.newDesctoCreate, "^[a-zA-Z0-9_ ]+$")
+		OR
+		NOT isValid("regex", local.newPricetoCreate, "^[1-9]\d*(\.\d+)?$")>
+			<cfset arrayAppend(session.createErrors,'Make sure to fill up valid content') />
 		</cfif>
 
 		<!--- Check if product with that code already exists, return false if it does --->
 		<cfset var existence=''>
 		<cfquery name="checkExistence" result="existence">
 			SELECT productCode FROM myproducts
-			WHERE productCode = <cfqueryparam value = #Trim(arguments.productCodetoCreate)# cfsqltype = "cf_sql_varchar">;
+			WHERE productCode = <cfqueryparam value = #local.newCodetoCreate# cfsqltype = "cf_sql_varchar">;
 		</cfquery>
 
-		<cfif existence.recordcount NEQ 0 AND arguments.productCodetoCreate NEQ ''>
+		<cfif existence.recordcount NEQ 0 AND local.newCodetoCreate NEQ ''>
 			<cfset arrayAppend(session.createErrors,'Product with this ID already exists') />
 		</cfif> 
 
@@ -246,23 +284,25 @@
 		<cfif existence.recordcount EQ 0 AND arrayLen(session.createErrors) EQ 0>
 			<cfif session.loggedInUser.role EQ 'admin'>
 				<cfquery name="insertNewProduct">
-					INSERT INTO myproducts (productCode, productName, productDesc, verified)
+					INSERT INTO myproducts (productCode, productName, productDesc, price, verified)
 					VALUES 
 					(
-						<cfqueryparam value = "#Trim(arguments.productCodetoCreate)#" cfsqltype = "cf_sql_varchar">,
-						<cfqueryparam value = "#Trim(arguments.productNametoCreate)#" cfsqltype = "cf_sql_varchar">,
-						<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newCodetoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newNametoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newDesctoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newPricetoCreate#" scale="2" cfsqltype = "cf_sql_decimal">,
 						'YES'
 					);
 				</cfquery>
 			<cfelse>
 				<cfquery name="insertNewProduct">
-					INSERT INTO myproducts (productCode, productName, productDesc, verified)
+					INSERT INTO myproducts (productCode, productName, productDesc, price, verified)
 					VALUES 
 					(
-						<cfqueryparam value = "#Trim(arguments.productCodetoCreate)#" cfsqltype = "cf_sql_varchar">,
-						<cfqueryparam value = "#Trim(arguments.productNametoCreate)#" cfsqltype = "cf_sql_varchar">,
-						<cfqueryparam value = "#Trim(arguments.productDesctoCreate)#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newCodetoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newNametoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newDesctoCreate#" cfsqltype = "cf_sql_varchar">,
+						<cfqueryparam value = "#local.newPricetoCreate#"  scale="2" cfsqltype = "cf_sql_decimal">,
 						'NO'
 					);
 				</cfquery>
